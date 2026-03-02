@@ -1,15 +1,31 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { ArrowLeft, CheckCircle2, AlertTriangle, AlertCircle, Sparkles, Target, Zap, FileText, ChevronDown, ChevronUp, Info } from "lucide-react";
+import { ArrowLeft, CheckCircle2, AlertTriangle, AlertCircle, Sparkles, Target, Zap, FileText, ChevronDown, ChevronUp, Info, ShieldCheck, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Mock Data reflecting the new strict but improvement-oriented scoring model
 const MOCK_DATA = {
   score: 72,
+  confidenceScore: 84,
+  confidenceLabel: "High Reliability",
+  confidenceBreakdown: {
+    jdParsing: 18,        // 0-20
+    resumeParsing: 17,    // 0-20
+    keywordMapping: 12,   // 0-15
+    experienceCertainty: 13, // 0-15
+    structuralStrength: 8,  // 0-10
+    validationIntegrity: 16 // 0-20
+  },
+  confidenceGaps: [
+    { component: "JD Parsing", score: 18, max: 20, detail: "Core skills and responsibilities successfully extracted. Some secondary preferences were ambiguous." },
+    { component: "Resume Parsing", score: 17, max: 20, detail: "Clear bullet structure and skills detected. Minor uncertainty in some early career date formats." },
+    { component: "Keyword Mapping", score: 12, max: 15, detail: "80% of identified JD requirements were successfully mapped to resume content." }
+  ],
   breakdown: {
     requiredSkillMatch: 65,      // 30%
     responsibilityAlignment: 75,  // 20%
@@ -208,6 +224,44 @@ const DeductionItem = ({ d }: { d: any }) => {
   );
 };
 
+const ConfidenceBreakdownItem = ({ gap }: { gap: any }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  return (
+    <div className="flex flex-col rounded-lg border border-slate-100 overflow-hidden bg-white/50">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center justify-between p-2 text-left w-full hover:bg-slate-50 transition-colors"
+      >
+        <div className="flex-1">
+          <div className="flex justify-between items-center mb-1">
+            <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider">{gap.component}</span>
+            <span className="text-[10px] font-black text-slate-900">{gap.score}/{gap.max}</span>
+          </div>
+          <Progress value={(gap.score / gap.max) * 100} className="h-1 bg-slate-100" />
+        </div>
+        <div className="ml-2">
+          {isOpen ? <ChevronUp className="w-3 h-3 text-slate-400" /> : <ChevronDown className="w-3 h-3 text-slate-400" />}
+        </div>
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="px-2 pb-2"
+          >
+            <p className="text-[9px] text-slate-500 leading-tight italic border-t border-slate-50 pt-1.5">
+              {gap.detail}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 import { Logo } from "@/components/Logo";
 
 export default function Results() {
@@ -268,6 +322,47 @@ export default function Results() {
               </div>
               <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-8">Strict Evaluation</h2>
               <CircularProgress value={MOCK_DATA.score} />
+              
+              <div className="mt-6 w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 relative overflow-hidden group">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-1.5">
+                    <ShieldCheck className="w-4 h-4 text-primary" />
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Confidence Score</span>
+                  </div>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <HelpCircle className="w-3.5 h-3.5 text-slate-300 cursor-help hover:text-primary transition-colors" />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-[200px] text-[10px] leading-relaxed p-3">
+                        This score reflects how confidently Optosaur was able to evaluate your resume based on structured data extraction and requirement clarity.
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+                
+                <div className="flex items-end justify-between mb-2">
+                  <span className="text-2xl font-black text-slate-900 leading-none">{MOCK_DATA.confidenceScore}%</span>
+                  <Badge variant="secondary" className="text-[9px] h-4 font-bold bg-white border-slate-200">
+                    {MOCK_DATA.confidenceLabel}
+                  </Badge>
+                </div>
+                
+                <Progress value={MOCK_DATA.confidenceScore} className="h-1 bg-slate-200" />
+                
+                <div className="mt-4 space-y-2">
+                  {MOCK_DATA.confidenceGaps.map((gap, i) => (
+                    <ConfidenceBreakdownItem key={i} gap={gap} />
+                  ))}
+                </div>
+                
+                {MOCK_DATA.confidenceScore < 65 && (
+                  <p className="mt-3 text-[10px] text-amber-600 font-bold leading-tight">
+                    Suggestion: Improve resume formatting and clarity to increase evaluation accuracy.
+                  </p>
+                )}
+              </div>
+
               <div className="mt-10 w-full space-y-3">
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">JD Evidence & Deductions</p>

@@ -1,0 +1,76 @@
+Implement a Confidence Score system in Optosaur.
+
+PURPOSE:
+Confidence Score measures how reliable the evaluation is,
+NOT how good the resume is.
+
+----------------------------------------
+STEP 1: DEFINE CONFIDENCE COMPONENTS
+----------------------------------------
+
+Calculate confidence from:
+
+1) JD Parsing Completeness (0–20)
+   - Were required skills extracted?
+   - Were responsibilities extracted?
+   - Was experience requirement detected?
+
+2) Resume Parsing Completeness (0–20)
+   - Skills detected?
+   - Experience years detected?
+   - Bullet structure detected?
+
+3) Keyword Mapping Reliability (0–15)
+   - % of JD requirements successfully mapped to resume analysis.
+
+4) Experience Detection Certainty (0–15)
+   - Clear date ranges?
+   - Or inferred estimates?
+
+5) Structural Data Strength (0–10)
+   - Quantified bullets detected?
+   - Clear sections?
+
+6) Validation Integrity (0–20)
+   - No hallucination rejection triggers?
+   - No rewrite sanitization failures?
+
+----------------------------------------
+STEP 2: CALCULATE FINAL CONFIDENCE
+----------------------------------------
+
+confidence_score = sum(all components)
+Max = 100
+
+----------------------------------------
+STEP 3: DISPLAY IN UI
+----------------------------------------
+
+Display below Match Score:
+
+Confidence Score: 84%
+Label:
+- High Reliability
+- Good Reliability
+- Moderate Reliability
+- Limited Reliability
+
+Add tooltip:
+
+"This score reflects how confidently Optosaur was able to evaluate your resume based on structured data extraction and requirement clarity."
+
+----------------------------------------
+STEP 4: LOW CONFIDENCE HANDLING
+----------------------------------------
+
+If confidence < 65%:
+Show suggestion:
+
+"Improve resume formatting and clarity to increase evaluation accuracy."
+
+----------------------------------------
+IMPORTANT
+----------------------------------------
+
+Confidence Score must NOT depend on match score.
+It must depend only on analysis reliability.
