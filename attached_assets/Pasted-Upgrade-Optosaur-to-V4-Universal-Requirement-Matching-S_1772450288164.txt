@@ -1,0 +1,117 @@
+Upgrade Optosaur to V4: Universal Requirement Matching + Shortlist Prediction Engine.
+
+Core Principles:
+- Fully domain-agnostic.
+- Works for any resume and any JD.
+- No predefined industry rules.
+- JD is the only source of truth.
+
+----------------------------------------
+ENGINE 1: REQUIREMENT INTELLIGENCE
+----------------------------------------
+
+Decompose JD into atomic requirement objects:
+
+Each object:
+- Full JD sentence
+- Type: skill, experience, responsibility, tool, certification, soft skill
+- Importance weight (based on repetition or strong phrasing)
+- Extracted keywords
+
+No domain-specific assumptions.
+
+----------------------------------------
+ENGINE 2: CAPABILITY INTELLIGENCE
+----------------------------------------
+
+Parse resume into structured capability objects:
+
+- Skills
+- Tools
+- Responsibilities
+- Certifications
+- Years of experience
+- Quantified evidence
+
+----------------------------------------
+ENGINE 3: REQUIREMENT MATCHING
+----------------------------------------
+
+For each JD requirement:
+
+1) Compute:
+   - Keyword overlap score
+   - Semantic similarity score
+   - Experience alignment score
+
+2) Classify match:
+   - Strong Match
+   - Moderate Match
+   - Weak Match
+   - No Match
+
+3) Assign requirement confidence.
+
+----------------------------------------
+ENGINE 4: MATCH SCORE (ANALYZER MODE)
+----------------------------------------
+
+Final Match Score =
+Sum(requirement_weight × match_strength)
+
+No global keyword density scoring.
+No industry bias.
+
+----------------------------------------
+ENGINE 5: SHORTLIST PROBABILITY (DECISION MODE)
+----------------------------------------
+
+Simulate recruiter behavior:
+
+Shortlist Probability should consider:
+- Overall match score
+- Number of structural gaps
+- Missing mandatory requirements
+- Experience seniority mismatch
+
+Rules:
+- If 1 mandatory requirement missing → cap probability at 65%.
+- If 2+ mandatory missing → cap at 50%.
+- If experience gap > 2 years → reduce probability further.
+
+Display:
+
+Match Score: X%
+Shortlist Probability: Y%
+Confidence Score: Z%
+
+----------------------------------------
+UI DISPLAY
+----------------------------------------
+
+Show:
+
+1) Requirement Mapping Table:
+   - JD Requirement
+   - Best Resume Evidence
+   - Match Strength
+   - Gap Type
+   - Confidence
+
+2) Structural vs Tactical Gaps
+
+3) Improvement Roadmap
+
+----------------------------------------
+IMPORTANT
+----------------------------------------
+
+Optosaur must:
+- Never fabricate data.
+- Never assume domain.
+- Never inflate scope.
+- Be fully traceable and explainable.
+- Work for marketing, HR, finance, tech, product, healthcare, etc.
+
+Goal:
+Make Optosaur a universal resume-JD intelligence engine.

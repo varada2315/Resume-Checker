@@ -11,8 +11,10 @@ import { motion, AnimatePresence } from "framer-motion";
 // Mock Data reflecting the new strict but improvement-oriented scoring model
 const MOCK_DATA = {
   score: 72,
+  shortlistProbability: 64,
   confidenceScore: 84,
   confidenceLabel: "High Reliability",
+  // ... rest of data
   confidenceBreakdown: {
     jdParsing: 18,        // 0-20
     resumeParsing: 17,    // 0-20
@@ -127,36 +129,79 @@ const CircularProgress = ({ value }: { value: number }) => {
     return "text-destructive";
   };
 
+  const getProbColor = (val: number) => {
+    if (val >= 75) return "text-emerald-500";
+    if (val >= 60) return "text-amber-500";
+    if (val >= 40) return "text-orange-500";
+    return "text-destructive";
+  };
+
   return (
-    <div className="relative w-56 h-56 flex items-center justify-center">
-      <svg className="w-full h-full transform -rotate-90 absolute">
-        <circle
-          cx="112"
-          cy="112"
-          r="100"
-          stroke="currentColor"
-          strokeWidth="14"
-          fill="transparent"
-          className="text-muted/30"
-        />
-        <circle
-          cx="112"
-          cy="112"
-          r="100"
-          stroke="currentColor"
-          strokeWidth="14"
-          fill="transparent"
-          strokeDasharray={100 * 2 * Math.PI}
-          strokeDashoffset={100 * 2 * Math.PI - (progress / 100) * (100 * 2 * Math.PI)}
-          className={`transition-all duration-1000 ease-out ${getColor(value)}`}
-          strokeLinecap="round"
-        />
-      </svg>
-      <div className="text-center z-10 flex flex-col items-center">
-        <span className={`text-6xl font-black tracking-tighter ${getColor(value)}`}>
-          {progress}
-        </span>
-        <span className="text-sm font-bold text-muted-foreground uppercase tracking-widest mt-1">Match Score</span>
+    <div className="flex flex-col md:flex-row items-center justify-center gap-8 w-full max-w-2xl mx-auto">
+      {/* Match Score */}
+      <div className="relative w-48 h-48 flex items-center justify-center">
+        <svg className="w-full h-full transform -rotate-90 absolute">
+          <circle
+            cx="96"
+            cy="96"
+            r="86"
+            stroke="currentColor"
+            strokeWidth="12"
+            fill="transparent"
+            className="text-muted/20"
+          />
+          <circle
+            cx="96"
+            cy="96"
+            r="86"
+            stroke="currentColor"
+            strokeWidth="12"
+            fill="transparent"
+            strokeDasharray={86 * 2 * Math.PI}
+            strokeDashoffset={86 * 2 * Math.PI - (progress / 100) * (86 * 2 * Math.PI)}
+            className={`transition-all duration-1000 ease-out ${getColor(value)}`}
+            strokeLinecap="round"
+          />
+        </svg>
+        <div className="text-center z-10 flex flex-col items-center">
+          <span className={`text-5xl font-black tracking-tighter ${getColor(value)}`}>
+            {progress}%
+          </span>
+          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-1">Match Score</span>
+        </div>
+      </div>
+
+      {/* Shortlist Probability */}
+      <div className="relative w-40 h-40 flex items-center justify-center">
+        <svg className="w-full h-full transform -rotate-90 absolute">
+          <circle
+            cx="80"
+            cy="80"
+            r="70"
+            stroke="currentColor"
+            strokeWidth="10"
+            fill="transparent"
+            className="text-muted/20"
+          />
+          <circle
+            cx="80"
+            cy="80"
+            r="70"
+            stroke="currentColor"
+            strokeWidth="10"
+            fill="transparent"
+            strokeDasharray={70 * 2 * Math.PI}
+            strokeDashoffset={70 * 2 * Math.PI - (MOCK_DATA.shortlistProbability / 100) * (70 * 2 * Math.PI)}
+            className={`transition-all duration-1000 delay-300 ease-out ${getProbColor(MOCK_DATA.shortlistProbability)}`}
+            strokeLinecap="round"
+          />
+        </svg>
+        <div className="text-center z-10 flex flex-col items-center">
+          <span className={`text-4xl font-black tracking-tighter ${getProbColor(MOCK_DATA.shortlistProbability)}`}>
+            {MOCK_DATA.shortlistProbability}%
+          </span>
+          <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1">Shortlist Prob.</span>
+        </div>
       </div>
     </div>
   );
@@ -320,7 +365,7 @@ export default function Results() {
               <div className="absolute top-6 left-6 opacity-10">
                 <Logo className="w-20 h-20 text-primary" mood={getMood()} />
               </div>
-              <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-8">Strict Evaluation</h2>
+              <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-8">V4 Prediction Engine</h2>
               <CircularProgress value={MOCK_DATA.score} />
               
               <div className="mt-6 w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 relative overflow-hidden group">
@@ -365,8 +410,15 @@ export default function Results() {
 
               <div className="mt-10 w-full space-y-3">
                 <div className="flex items-center justify-between mb-1">
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">JD Evidence & Deductions</p>
-                  <Badge variant="secondary" className="text-[9px] h-4">Transparency Mode</Badge>
+                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Shortlist Logic & Penalties</p>
+                  <Badge variant="secondary" className="text-[9px] h-4">Decision Mode</Badge>
+                </div>
+                <div className="p-3 rounded-xl bg-red-50/50 border border-red-100 text-[11px] text-red-700 leading-relaxed">
+                  <p className="font-bold flex items-center gap-1.5 mb-1">
+                    <AlertTriangle className="w-3 h-3" /> Shortlist Probability Capped
+                  </p>
+                  1 mandatory requirement missing → Capped at 65%. 
+                  Experience gap &gt; 2 years → Further -5% reduction.
                 </div>
                 {MOCK_DATA.deductions.map((d, i) => (
                   <DeductionItem key={i} d={d} />
@@ -380,6 +432,47 @@ export default function Results() {
             animate={{ opacity: 1, y: 0 }}
             className="lg:col-span-8 space-y-6"
           >
+            {/* Engine 1: Requirement Intelligence */}
+            <Card className="border-none shadow-xl shadow-slate-200/50 bg-white overflow-hidden">
+              <div className="p-1 bg-gradient-to-r from-blue-500/20 to-indigo-500/20" />
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xl font-bold flex items-center gap-2 text-slate-900">
+                  <FileText className="w-5 h-5 text-blue-500" />
+                  Requirement Mapping Table
+                </CardTitle>
+                <CardDescription className="text-slate-500">Atomic decomposition of JD requirements matched against resume evidence.</CardDescription>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm">
+                    <thead className="bg-slate-50 border-y border-slate-100 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                      <tr>
+                        <th className="px-6 py-3">JD Requirement</th>
+                        <th className="px-6 py-3">Resume Evidence</th>
+                        <th className="px-6 py-3">Match</th>
+                        <th className="px-6 py-3">Gap</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-50">
+                      {[
+                        { req: "Design scalable cloud architecture using AWS/Azure", evidence: "Not explicitly found", strength: "No Match", gap: "Technical", color: "text-red-500" },
+                        { req: "7+ years of Software Engineering experience", evidence: "5.5 years across 3 roles", strength: "Moderate", gap: "Seniority", color: "text-amber-500" },
+                        { req: "High-concurrency systems & scalability", evidence: "Optimized distributed systems", strength: "Strong", gap: "None", color: "text-emerald-500" },
+                        { req: "CI/CD and Automation proficiency", evidence: "Implemented Jenkins pipelines", strength: "Strong", gap: "None", color: "text-emerald-500" }
+                      ].map((item, i) => (
+                        <tr key={i} className="hover:bg-slate-50/50 transition-colors">
+                          <td className="px-6 py-4 font-medium text-slate-700 max-w-xs">{item.req}</td>
+                          <td className="px-6 py-4 text-slate-500 italic">"{item.evidence}"</td>
+                          <td className={`px-6 py-4 font-bold ${item.color}`}>{item.strength}</td>
+                          <td className="px-6 py-4"><Badge variant="outline" className="text-[10px]">{item.gap}</Badge></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </CardContent>
+            </Card>
+
             <Card className="border-none shadow-xl shadow-slate-200/50 bg-white">
               <CardHeader className="pb-2">
                 <CardTitle className="text-xl font-bold flex items-center gap-2 text-slate-900">
