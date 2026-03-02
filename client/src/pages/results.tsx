@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { ArrowLeft, CheckCircle2, AlertTriangle, AlertCircle, Sparkles, Target, Zap, FileText } from "lucide-react";
+import { ArrowLeft, CheckCircle2, AlertTriangle, AlertCircle, Sparkles, Target, Zap, FileText, ChevronDown, ChevronUp, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Mock Data reflecting the new strict but improvement-oriented scoring model
 const MOCK_DATA = {
@@ -21,9 +21,42 @@ const MOCK_DATA = {
   status: "Moderate", 
   verdict: "Moderate Match – Improvements Needed",
   deductions: [
-    { value: "-10%", label: "Skill Gap", detail: "Explicitly mentioned 'Cloud Architecture' missing from resume." },
-    { value: "-8%", label: "Experience Alignment", detail: "JD requires 7+ years, detected ~5.5 years of relevant tenure." },
-    { value: "-5%", label: "Keyword Coverage", detail: "Low density of high-frequency JD terms like 'Scalability' and 'Automation'." }
+    { 
+      value: "-10%", 
+      label: "Skill Gap", 
+      detail: "Missing 'Cloud Architecture' knowledge.",
+      requirement: {
+        id: "REQ-001",
+        sentence: "Design and implement scalable cloud architecture solutions using AWS or Azure.",
+        category: "Skill Requirement",
+        status: "Unmatched",
+        evidence: "No mention of Cloud Architecture or specific CSPs (AWS/Azure) found in resume."
+      }
+    },
+    { 
+      value: "-8%", 
+      label: "Experience Alignment", 
+      detail: "Detected ~5.5 years, JD requires 7+.",
+      requirement: {
+        id: "REQ-002",
+        sentence: "Minimum of 7 years of experience in software engineering with a focus on distributed systems.",
+        category: "Experience Requirement",
+        status: "Partially Matched",
+        evidence: "Resume lists total tenure of 5.5 years across all roles."
+      }
+    },
+    { 
+      value: "-5%", 
+      label: "Keyword Coverage", 
+      detail: "Low density of 'Scalability'.",
+      requirement: {
+        id: "REQ-003",
+        sentence: "Proven track record of building high-concurrency systems with a focus on scalability.",
+        category: "Tool/Technology Requirement",
+        status: "Partially Matched",
+        evidence: "Keyword 'Scalability' appears once, but lacks context of 'high-concurrency' systems."
+      }
+    }
   ],
   gaps: {
     structural: [
@@ -113,6 +146,68 @@ const CircularProgress = ({ value }: { value: number }) => {
   );
 };
 
+const DeductionItem = ({ d }: { d: any }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="flex flex-col rounded-xl bg-slate-50 border border-slate-100 overflow-hidden group hover:border-primary/20 transition-all">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center justify-between p-3 text-left w-full"
+      >
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <p className="text-xs font-bold text-slate-900">{d.label}</p>
+            <Badge variant="outline" className="text-[8px] py-0 px-1 font-black uppercase tracking-tighter h-3.5 border-slate-200 text-slate-400">
+              {d.requirement.category}
+            </Badge>
+          </div>
+          <p className="text-[10px] text-slate-500 line-clamp-1">{d.detail}</p>
+        </div>
+        <div className="flex items-center gap-3 ml-4">
+          <span className="text-sm font-black text-destructive">{d.value}</span>
+          {isOpen ? <ChevronUp className="w-3 h-3 text-slate-400" /> : <ChevronDown className="w-3 h-3 text-slate-400" />}
+        </div>
+      </button>
+      
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="border-t border-slate-100 bg-white p-3 space-y-3"
+          >
+            <div>
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1 mb-1">
+                <FileText className="w-2.5 h-2.5" /> JD Requirement
+              </span>
+              <p className="text-[11px] text-slate-700 font-medium leading-relaxed italic">
+                "{d.requirement.sentence}"
+              </p>
+            </div>
+            <div>
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1 mb-1">
+                <Info className="w-2.5 h-2.5" /> Resume Match Status
+              </span>
+              <div className="flex items-center gap-2">
+                <Badge 
+                  className={`text-[9px] font-bold px-1.5 py-0 ${
+                    d.requirement.status === "Unmatched" ? "bg-red-100 text-red-700 border-red-200" : "bg-amber-100 text-amber-700 border-amber-200"
+                  }`}
+                >
+                  {d.requirement.status}
+                </Badge>
+                <p className="text-[11px] text-slate-600 font-medium">{d.requirement.evidence}</p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 import { Logo } from "@/components/Logo";
 
 export default function Results() {
@@ -174,15 +269,12 @@ export default function Results() {
               <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-8">Strict Evaluation</h2>
               <CircularProgress value={MOCK_DATA.score} />
               <div className="mt-10 w-full space-y-3">
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Transparent Deductions</p>
+                <div className="flex items-center justify-between mb-1">
+                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">JD Evidence & Deductions</p>
+                  <Badge variant="secondary" className="text-[9px] h-4">Transparency Mode</Badge>
+                </div>
                 {MOCK_DATA.deductions.map((d, i) => (
-                  <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 group hover:border-destructive/30 transition-colors">
-                    <div className="text-left">
-                      <p className="text-xs font-bold text-slate-900">{d.label}</p>
-                      <p className="text-[10px] text-slate-500">{d.detail}</p>
-                    </div>
-                    <span className="text-sm font-black text-destructive">{d.value}</span>
-                  </div>
+                  <DeductionItem key={i} d={d} />
                 ))}
               </div>
             </Card>
