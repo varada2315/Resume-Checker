@@ -91,6 +91,8 @@ const CircularProgress = ({ value }: { value: number }) => {
   );
 };
 
+import { Logo } from "@/components/Logo";
+
 export default function Results() {
   const [, setLocation] = useLocation();
 
@@ -106,6 +108,12 @@ export default function Results() {
     return "Low Match – Improve Resume";
   };
 
+  const getMood = () => {
+    if (MOCK_DATA.score >= 80) return "confident";
+    if (MOCK_DATA.score >= 60) return "neutral";
+    return "concerned";
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col font-sans">
       <header className="border-b bg-white/50 backdrop-blur-md sticky top-0 z-10">
@@ -115,10 +123,8 @@ export default function Results() {
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div className="flex items-center gap-2">
-              <div className="bg-primary/10 p-1.5 rounded-md">
-                <CheckCircle2 className="w-5 h-5 text-primary" />
-              </div>
-              <span className="text-lg font-bold tracking-tight">SmartATS</span>
+              <Logo className="w-8 h-8 text-primary" />
+              <span className="text-lg font-bold tracking-tight">Optosaur</span>
             </div>
           </div>
           <Button variant="outline" size="sm" onClick={() => setLocation("/")}>
@@ -136,6 +142,9 @@ export default function Results() {
             className="lg:col-span-1"
           >
             <Card className="h-full glass-card border-none shadow-md relative overflow-hidden flex flex-col items-center justify-center p-8 text-center">
+              <div className="absolute top-4 left-4">
+                <Logo className="w-12 h-12 text-primary/20" mood={getMood()} />
+              </div>
               <h2 className="text-lg font-semibold mb-6">Deterministic ATS Score</h2>
               <CircularProgress value={MOCK_DATA.score} />
               <div className="mt-8 w-full">

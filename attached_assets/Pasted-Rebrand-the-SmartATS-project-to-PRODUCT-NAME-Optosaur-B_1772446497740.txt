@@ -1,0 +1,99 @@
+Rebrand the SmartATS project to:
+
+PRODUCT NAME: Optosaur
+
+Brand Personality:
+- Smart
+- Analytical
+- Trustworthy
+- Modern SaaS
+- Slightly playful but still professional
+
+-----------------------------------
+LOGO REQUIREMENTS
+-----------------------------------
+
+Design a minimal vector-style dinosaur logo.
+
+Style Guidelines:
+- Very basic abstract dinosaur head
+- Front-facing like an ID card or passport photo
+- Symmetrical
+- Clean geometric shapes
+- No cartoon eyes
+- No childish expressions
+- No gradients
+- Flat design
+- Monochrome (dark green or black)
+- Should look like a tech company mascot
+
+The dinosaur should:
+- Look intelligent
+- Slightly serious expression
+- Simple outline
+- Suitable for favicon and navbar logo
+
+Place dinosaur inside:
+- Rounded square badge OR
+- Subtle circular frame (like profile photo)
+
+Make it SVG format.
+
+-----------------------------------
+BRAND UI UPDATE
+-----------------------------------
+
+Update landing page:
+
+Hero Section:
+Title: "Optosaur"
+Subtitle: "AI-Powered Resume Optimization Engine"
+Tagline below:
+"Precision matching. Recruiter-level insights. Smarter applications."
+
+Replace old branding everywhere.
+
+Navbar:
+Left: Dino logo + Optosaur text
+Right: Analyze Resume button
+
+Color Palette:
+Primary: Deep forest green (#0F3D2E) OR charcoal black
+Accent: Soft neon green (#4ADE80) for highlights
+Background: Very light gray or white
+Keep premium and minimal.
+
+Typography:
+Keep Plus Jakarta Sans.
+
+-----------------------------------
+RESULTS PAGE UPDATE
+-----------------------------------
+
+Add small dino icon near score:
+When score > 80 → confident expression
+60–80 → neutral
+<60 → slightly concerned
+
+But keep minimal, not cartoonish.
+
+-----------------------------------
+FAVICON
+-----------------------------------
+
+Generate small simplified dino head SVG for favicon.
+
+-----------------------------------
+IMPORTANT
+-----------------------------------
+
+Logo must:
+- Scale cleanly
+- Be simple
+- Look like modern AI SaaS branding
+- Not look like a kids brand
+
+Generate:
+- Logo SVG code
+- Updated HTML with branding
+- Updated CSS variables for colors

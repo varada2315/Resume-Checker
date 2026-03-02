@@ -32,36 +32,36 @@
 }
 
 :root {
-  /* Minimal Premium Light Theme */
+  /* Optosaur Brand Palette: Deep Forest & Soft Neon */
   --background: 210 20% 98%;
-  --foreground: 220 30% 12%;
+  --foreground: 165 60% 5%;
   
   --card: 0 0% 100%;
-  --card-foreground: 220 30% 12%;
+  --card-foreground: 165 60% 5%;
   
   --popover: 0 0% 100%;
-  --popover-foreground: 220 30% 12%;
+  --popover-foreground: 165 60% 5%;
   
-  --primary: 236 72% 52%; /* Deep Indigo */
-  --primary-foreground: 0 0% 100%;
+  --primary: 165 60% 15%; /* Deep Forest Green #0F3D2E equivalentish */
+  --primary-foreground: 142 70% 95%;
   
-  --secondary: 220 14% 92%;
-  --secondary-foreground: 220 30% 12%;
+  --secondary: 142 72% 58%; /* Soft Neon Green #4ADE80 */
+  --secondary-foreground: 165 60% 10%;
   
-  --muted: 220 14% 92%;
-  --muted-foreground: 220 10% 45%;
+  --muted: 210 10% 90%;
+  --muted-foreground: 165 20% 40%;
   
-  --accent: 220 14% 92%;
-  --accent-foreground: 220 30% 12%;
+  --accent: 142 72% 58%;
+  --accent-foreground: 165 60% 10%;
   
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
   
-  --border: 220 14% 88%;
-  --input: 220 14% 88%;
-  --ring: 236 72% 52%;
+  --border: 165 20% 90%;
+  --input: 165 20% 90%;
+  --ring: 142 72% 58%;
   
-  --radius: 0.75rem; /* 12px */
+  --radius: 0.75rem;
 }
 
 @layer base {
@@ -73,17 +73,16 @@
   }
 }
 
-/* Custom Utilities for Premium Polish */
 @layer utilities {
   .glass-card {
     @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-sm;
   }
   
   .subtle-gradient {
-    background: linear-gradient(135deg, hsl(210 20% 98%) 0%, hsl(220 14% 94%) 100%);
+    background: linear-gradient(135deg, hsl(210 20% 98%) 0%, hsl(165 20% 94%) 100%);
   }
   
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-400;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
   }
 }
