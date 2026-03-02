@@ -9,56 +9,56 @@ import { motion } from "framer-motion";
 
 // Mock Data reflecting the new strict but improvement-oriented scoring model
 const MOCK_DATA = {
-  score: 64,
+  score: 72,
   breakdown: {
-    mandatorySkills: 45, // 30%
-    domainRelevance: 30,  // 20%
-    experienceAlignment: 50, // 20%
-    responsibilityAlignment: 70, // 15%
-    quantifiedImpact: 20, // 10%
-    atsStructure: 95      // 5%
+    requiredSkillMatch: 65,      // 30%
+    responsibilityAlignment: 75,  // 20%
+    experienceAlignment: 80,     // 20%
+    keywordCoverage: 70,         // 15%
+    quantifiedImpact: 60,        // 10%
+    structureQuality: 85         // 5%
   },
-  status: "Borderline", 
-  verdict: "Borderline – Domain or Experience Gap",
+  status: "Moderate", 
+  verdict: "Moderate Match – Improvements Needed",
   deductions: [
-    { value: "-15%", label: "Domain Gap", detail: "No KYC/Fintech experience detected in a high-compliance role." },
-    { value: "-10%", label: "Experience Gap", detail: "Required 5+ years, detected ~3.5 years of relevant tenure." },
-    { value: "-8%", label: "Low Quantified Impact", detail: "Only 1 measurable bullet point found (%, $, numbers)." }
+    { value: "-10%", label: "Skill Gap", detail: "Explicitly mentioned 'Cloud Architecture' missing from resume." },
+    { value: "-8%", label: "Experience Alignment", detail: "JD requires 7+ years, detected ~5.5 years of relevant tenure." },
+    { value: "-5%", label: "Keyword Coverage", detail: "Low density of high-frequency JD terms like 'Scalability' and 'Automation'." }
   ],
   gaps: {
     structural: [
-      { type: "Domain", message: "Missing Fintech/Banking industry context which is critical for this regulatory role." },
-      { type: "Experience", message: "Senior level requires more ownership of end-to-end product lifecycles." }
+      { type: "Experience", message: "Senior level requires more demonstrated ownership of architectural decisions." },
+      { type: "Skills", message: "Missing specific cloud infrastructure certifications mentioned in the JD." }
     ],
     tactical: [
-      { type: "Metrics", message: "Resume lacks scale indicators (user count, performance gains, revenue impact)." },
-      { type: "Clarity", message: "Some responsibility descriptions are too generic and lack JD-specific keywords." }
+      { type: "Keywords", message: "Increase frequency of role-specific verbs found in the JD requirements." },
+      { type: "Impact", message: "Several bullet points lack quantified results (%, $, or time savings)." }
     ]
   },
   roadmap: {
     immediate: [
-      "Rewrite 'Worked on APIs' to 'Optimized 5+ Node.js endpoints reducing latency by 40%'.",
-      "Add a 'Key Achievement' section to each role with at least 2 quantified metrics."
+      "Explicitly mention 'Cloud Architecture' in the skills summary if relevant experience exists.",
+      "Rephrase bullets to include high-frequency JD keywords: 'Scalability', 'Automation', 'CI/CD'."
     ],
     mediumTerm: [
-      "Complete a certification in Cloud Security or Fintech Regulations.",
-      "Contribute to an open-source Fintech project to bridge the domain gap."
+      "Obtain the specific cloud certifications highlighted in the JD preferred skills.",
+      "Document a case study of an end-to-end architectural project to prove seniority."
     ],
     longTerm: [
-      "Target Mid-level roles in Fintech to build the necessary domain authority for Senior positions.",
-      "Focus on taking ownership of architectural decisions in current projects."
+      "Transition into lead roles to bridge the 2-year seniority gap identified by the JD.",
+      "Focus on cross-functional leadership as emphasized in the JD core responsibilities."
     ]
   },
   aiSuggestions: [
     {
-      original: "Developed new features for the company website.",
-      improved: "Engineered 5+ high-traffic frontend modules using React/TypeScript, improving Lighthouse performance scores by 30%.",
-      reason: "Adds quantified impact and specific performance metrics as required by the new scoring engine."
+      original: "Responsible for managing the team and project delivery.",
+      improved: "Directed a cross-functional team of 8 to deliver architectural migrations, aligning with JD requirements for 'Scalability' and 'High Availability'.",
+      reason: "Aligns with JD core responsibilities and uses specific high-impact keywords."
     },
     {
-      original: "Helped with backend APIs.",
-      improved: "Architected RESTful Node.js endpoints serving 10k+ daily active users with 99.9% uptime.",
-      reason: "Specifies scale and reliability metrics."
+      original: "Worked on improving system performance.",
+      improved: "Optimized distributed system latency by 25%, directly addressing the JD requirement for 'Performance Tuning' and 'Quantified Results'.",
+      reason: "Adds quantified impact as requested by the scoring engine."
     }
   ]
 };
@@ -197,25 +197,25 @@ export default function Results() {
               <CardHeader className="pb-2">
                 <CardTitle className="text-xl font-bold flex items-center gap-2 text-slate-900">
                   <Target className="w-5 h-5 text-primary" />
-                  Weighted Scoring Logic
+                  JD-Centric Scoring Logic
                 </CardTitle>
-                <CardDescription className="text-slate-500">How our strict model calculated your match percentage</CardDescription>
+                <CardDescription className="text-slate-500">Pure JD-to-Resume alignment (Domain Agnostic)</CardDescription>
               </CardHeader>
               <CardContent className="grid md:grid-cols-2 gap-x-12 gap-y-6 py-6">
                 <div className="space-y-5">
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm font-bold text-slate-700">
-                      <span>Mandatory Skills (30%)</span>
-                      <span className={MOCK_DATA.breakdown.mandatorySkills < 50 ? "text-destructive" : ""}>{MOCK_DATA.breakdown.mandatorySkills}%</span>
+                      <span>Required Skill Match (30%)</span>
+                      <span className={MOCK_DATA.breakdown.requiredSkillMatch < 70 ? "text-destructive" : ""}>{MOCK_DATA.breakdown.requiredSkillMatch}%</span>
                     </div>
-                    <Progress value={MOCK_DATA.breakdown.mandatorySkills} className="h-2 bg-slate-100" />
+                    <Progress value={MOCK_DATA.breakdown.requiredSkillMatch} className="h-2 bg-slate-100" />
                   </div>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm font-bold text-slate-700">
-                      <span>Domain Relevance (20%)</span>
-                      <span>{MOCK_DATA.breakdown.domainRelevance}%</span>
+                      <span>Responsibility Alignment (20%)</span>
+                      <span>{MOCK_DATA.breakdown.responsibilityAlignment}%</span>
                     </div>
-                    <Progress value={MOCK_DATA.breakdown.domainRelevance} className="h-2 bg-slate-100" />
+                    <Progress value={MOCK_DATA.breakdown.responsibilityAlignment} className="h-2 bg-slate-100" />
                   </div>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm font-bold text-slate-700">
@@ -228,24 +228,24 @@ export default function Results() {
                 <div className="space-y-5">
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm font-bold text-slate-700">
-                      <span>Responsibilities (15%)</span>
-                      <span>{MOCK_DATA.breakdown.responsibilityAlignment}%</span>
+                      <span>Keyword Coverage (15%)</span>
+                      <span>{MOCK_DATA.breakdown.keywordCoverage}%</span>
                     </div>
-                    <Progress value={MOCK_DATA.breakdown.responsibilityAlignment} className="h-2 bg-slate-100" />
+                    <Progress value={MOCK_DATA.breakdown.keywordCoverage} className="h-2 bg-slate-100" />
                   </div>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm font-bold text-slate-700">
                       <span>Quantified Impact (10%)</span>
-                      <span className="text-destructive">{MOCK_DATA.breakdown.quantifiedImpact}%</span>
+                      <span className={MOCK_DATA.breakdown.quantifiedImpact < 70 ? "text-destructive" : "text-emerald-600"}>{MOCK_DATA.breakdown.quantifiedImpact}%</span>
                     </div>
-                    <Progress value={MOCK_DATA.breakdown.quantifiedImpact} className="h-2 bg-destructive/10" />
+                    <Progress value={MOCK_DATA.breakdown.quantifiedImpact} className="h-2 bg-slate-100" />
                   </div>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm font-bold text-slate-700">
-                      <span>ATS Structure (5%)</span>
-                      <span className="text-emerald-600">{MOCK_DATA.breakdown.atsStructure}%</span>
+                      <span>Structure Quality (5%)</span>
+                      <span className="text-emerald-600">{MOCK_DATA.breakdown.structureQuality}%</span>
                     </div>
-                    <Progress value={MOCK_DATA.breakdown.atsStructure} className="h-2 bg-slate-100" />
+                    <Progress value={MOCK_DATA.breakdown.structureQuality} className="h-2 bg-slate-100" />
                   </div>
                 </div>
               </CardContent>

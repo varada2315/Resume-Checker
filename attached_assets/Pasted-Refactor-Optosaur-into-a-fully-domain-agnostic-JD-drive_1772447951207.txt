@@ -1,0 +1,134 @@
+Refactor Optosaur into a fully domain-agnostic JD-driven evaluation engine.
+
+Core Principle:
+The Job Description is the single source of truth.
+The system must NOT assume any domain (tech, fintech, product, healthcare, etc.).
+
+-----------------------------------------
+STEP 1: DYNAMIC JD REQUIREMENT EXTRACTION
+-----------------------------------------
+
+From the provided JD, dynamically extract:
+
+1) Required Skills (explicit mentions)
+2) Preferred Skills
+3) Required Years of Experience
+4) Core Responsibilities
+5) Tools / Technologies mentioned
+6) Soft Skills mentioned
+7) Repeated keywords (frequency-based importance)
+
+Do NOT inject external skill expectations.
+Only use what is written in the JD.
+
+Return structured JSON like:
+
+{
+  "required_skills": [],
+  "preferred_skills": [],
+  "tools": [],
+  "years_required": "",
+  "core_responsibilities": [],
+  "soft_skills": [],
+  "important_keywords": []
+}
+
+-----------------------------------------
+STEP 2: RESUME EXTRACTION
+-----------------------------------------
+
+Extract from resume:
+
+- Skills
+- Tools
+- Years of experience
+- Bullet points
+- Quantified bullets (count)
+- Responsibilities mentioned
+- Keyword list
+
+Return structured JSON.
+
+-----------------------------------------
+STEP 3: MATCHING ENGINE (JD-BASED ONLY)
+-----------------------------------------
+
+Score ONLY based on overlap between JD and Resume.
+
+Scoring model:
+
+Required Skill Match – 30%
+Responsibility Alignment – 20%
+Experience Alignment – 20%
+Keyword Coverage – 15%
+Quantified Impact – 10%
+Structure Quality – 5%
+
+Rules:
+
+1) If a required skill from JD is missing:
+   Deduct proportionally.
+
+2) If required years > detected years:
+   Deduct proportionally.
+
+3) Do NOT deduct for domain gaps unless domain is explicitly stated in JD.
+
+4) Do NOT add or assume skills not written in JD.
+
+5) Final score must reflect ONLY JD-to-resume alignment.
+
+-----------------------------------------
+STEP 4: HONEST SUGGESTION ENGINE
+-----------------------------------------
+
+When generating improvements:
+
+- Only reference gaps found in JD comparison.
+- Do NOT hallucinate new tools.
+- Do NOT assume domain knowledge.
+- If JD mentions APIs, but resume does not:
+    Suggest adding API experience only if relevant experience exists.
+- If no relevant experience exists:
+    State clearly: "This requirement is not reflected in your resume."
+
+-----------------------------------------
+STEP 5: ROLE-NEUTRAL REWRITING
+-----------------------------------------
+
+Rewriting must:
+- Stay aligned with JD responsibilities.
+- Not shift candidate into a different role.
+- Not fabricate metrics or technologies.
+- Improve clarity and alignment only.
+
+-----------------------------------------
+STEP 6: VERDICT LOGIC
+-----------------------------------------
+
+Score > 80:
+Strong Match
+
+65–80:
+Moderate Match – Improvements Needed
+
+50–65:
+Partial Match – Gaps Identified
+
+< 50:
+Low Alignment with JD
+
+Verdict must strictly follow numeric score.
+
+-----------------------------------------
+IMPORTANT
+-----------------------------------------
+
+Optosaur must:
+- Be neutral across domains.
+- Be driven entirely by JD content.
+- Never assume industry standards outside JD.
+- Never fabricate skills.
+- Never inflate score due to formatting alone.
+
+Generate updated backend logic implementing this fully domain-agnostic architecture.
