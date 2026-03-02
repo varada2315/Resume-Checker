@@ -43,15 +43,15 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col font-sans selection:bg-primary/20">
+    <div className="min-h-screen bg-background flex flex-col font-sans selection:bg-primary/20 bg-[radial-gradient(circle_at_top_right,_var(--secondary)_0%,_transparent_25%),radial-gradient(circle_at_bottom_left,_var(--secondary)_0%,_transparent_25%)]">
       {/* Header */}
       <header className="border-b bg-white/50 backdrop-blur-md sticky top-0 z-10">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Logo className="w-8 h-8 text-primary" />
-            <span className="text-xl font-bold tracking-tight">Optosaur</span>
+            <Logo className="w-8 h-8" />
+            <span className="text-xl font-extrabold tracking-tight text-primary">Optosaur</span>
           </div>
-          <Button variant="ghost" size="sm" onClick={() => document.getElementById('analyze-btn')?.scrollIntoView({ behavior: 'smooth' })}>
+          <Button variant="ghost" size="sm" className="text-primary hover:text-primary hover:bg-primary/5" onClick={() => document.getElementById('analyze-btn')?.scrollIntoView({ behavior: 'smooth' })}>
             Analyze Resume
           </Button>
         </div>
@@ -60,10 +60,10 @@ export default function Home() {
       {/* Main Content */}
       <main className="flex-1 container mx-auto px-4 py-12 max-w-5xl">
         <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <h1 className="text-5xl md:text-6xl font-black mb-4 tracking-tight text-foreground">
+          <h1 className="text-5xl md:text-6xl font-black mb-4 tracking-tight text-primary">
             Optosaur
           </h1>
-          <p className="text-xl font-semibold text-primary/80 mb-2">
+          <p className="text-xl font-semibold text-primary mb-2">
             AI-Powered Resume Optimization Engine
           </p>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed italic">
@@ -79,14 +79,14 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <Card className="glass-card border-none shadow-md overflow-hidden">
-              <div className="p-1 bg-gradient-to-r from-primary/20 to-indigo-400/20" />
+            <Card className="glass-card border-none shadow-xl shadow-orange-200/20 overflow-hidden">
+              <div className="p-1 bg-gradient-to-r from-primary/40 to-secondary" />
               <CardContent className="p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="bg-primary/10 p-2 rounded-md">
                     <FileText className="w-5 h-5 text-primary" />
                   </div>
-                  <h2 className="text-xl font-semibold">1. Upload Resume</h2>
+                  <h2 className="text-xl font-bold text-primary">1. Upload Resume</h2>
                 </div>
                 
                 <div 
@@ -149,14 +149,14 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <Card className="glass-card border-none shadow-md overflow-hidden h-full flex flex-col">
-              <div className="p-1 bg-gradient-to-r from-indigo-400/20 to-purple-400/20" />
+            <Card className="glass-card border-none shadow-xl shadow-orange-200/20 overflow-hidden h-full flex flex-col">
+              <div className="p-1 bg-gradient-to-r from-secondary to-primary/40" />
               <CardContent className="p-6 flex-1 flex flex-col">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-indigo-500/10 p-2 rounded-md">
-                    <FileText className="w-5 h-5 text-indigo-500" />
+                  <div className="bg-primary/10 p-2 rounded-md">
+                    <FileText className="w-5 h-5 text-primary" />
                   </div>
-                  <h2 className="text-xl font-semibold">2. Job Description</h2>
+                  <h2 className="text-xl font-bold text-primary">2. Job Description</h2>
                 </div>
                 
                 <p className="text-sm text-muted-foreground mb-3">

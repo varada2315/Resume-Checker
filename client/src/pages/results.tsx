@@ -326,16 +326,16 @@ export default function Results() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex flex-col font-sans selection:bg-primary/10">
+    <div className="min-h-screen bg-background flex flex-col font-sans selection:bg-primary/10 bg-[radial-gradient(circle_at_top_right,_var(--secondary)_0%,_transparent_25%),radial-gradient(circle_at_bottom_left,_var(--secondary)_0%,_transparent_25%)]">
       <header className="border-b bg-white/80 backdrop-blur-xl sticky top-0 z-20">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => setLocation("/")} className="rounded-full hover:bg-slate-100">
+            <Button variant="ghost" size="icon" onClick={() => setLocation("/")} className="rounded-full hover:bg-orange-50 text-primary">
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div className="flex items-center gap-2">
-              <Logo className="w-8 h-8 text-primary" />
-              <span className="text-lg font-black tracking-tight text-slate-900">Optosaur</span>
+              <Logo className="w-8 h-8" />
+              <span className="text-lg font-black tracking-tight text-primary">Optosaur</span>
             </div>
           </div>
           <Button variant="default" size="sm" onClick={() => setLocation("/")} className="rounded-full shadow-lg shadow-primary/20">
@@ -347,10 +347,10 @@ export default function Results() {
       <main className="flex-1 container mx-auto px-4 py-8 max-w-6xl">
         <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-black tracking-tight text-slate-900">Analysis Report</h1>
+            <h1 className="text-3xl font-black tracking-tight text-primary">Analysis Report</h1>
             <p className="text-slate-500 mt-1">Strict, improvement-oriented evaluation for high-stakes roles.</p>
           </div>
-          <Badge variant="outline" className={`px-4 py-1.5 rounded-full text-sm font-bold shadow-sm ${getStatusColor(MOCK_DATA.score)}`}>
+          <Badge variant="outline" className={`px-4 py-1.5 rounded-full text-sm font-bold shadow-sm bg-primary/10 text-primary border-primary/20`}>
             {MOCK_DATA.verdict}
           </Badge>
         </div>
@@ -361,9 +361,9 @@ export default function Results() {
             animate={{ opacity: 1, scale: 1 }}
             className="lg:col-span-4"
           >
-            <Card className="h-full border-none shadow-xl shadow-slate-200/50 bg-white relative overflow-hidden flex flex-col items-center justify-center p-8 text-center">
-              <div className="absolute top-6 left-6 opacity-10">
-                <Logo className="w-20 h-20 text-primary" mood={getMood()} />
+            <Card className="h-full border-none shadow-xl shadow-orange-200/20 bg-white relative overflow-hidden flex flex-col items-center justify-center p-8 text-center">
+              <div className="absolute top-6 left-6 opacity-20">
+                <Logo className="w-20 h-20" />
               </div>
               <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-8">V4 Prediction Engine</h2>
               <CircularProgress value={MOCK_DATA.score} />
@@ -433,11 +433,11 @@ export default function Results() {
             className="lg:col-span-8 space-y-6"
           >
             {/* Engine 1: Requirement Intelligence */}
-            <Card className="border-none shadow-xl shadow-slate-200/50 bg-white overflow-hidden">
-              <div className="p-1 bg-gradient-to-r from-blue-500/20 to-indigo-500/20" />
+            <Card className="border-none shadow-xl shadow-orange-200/20 bg-white overflow-hidden">
+              <div className="p-1 bg-gradient-to-r from-primary/20 to-secondary/40" />
               <CardHeader className="pb-2">
-                <CardTitle className="text-xl font-bold flex items-center gap-2 text-slate-900">
-                  <FileText className="w-5 h-5 text-blue-500" />
+                <CardTitle className="text-xl font-bold flex items-center gap-2 text-primary">
+                  <FileText className="w-5 h-5" />
                   Requirement Mapping Table
                 </CardTitle>
                 <CardDescription className="text-slate-500">Atomic decomposition of JD requirements matched against resume evidence.</CardDescription>
@@ -473,10 +473,10 @@ export default function Results() {
               </CardContent>
             </Card>
 
-            <Card className="border-none shadow-xl shadow-slate-200/50 bg-white">
+            <Card className="border-none shadow-xl shadow-orange-200/20 bg-white">
               <CardHeader className="pb-2">
-                <CardTitle className="text-xl font-bold flex items-center gap-2 text-slate-900">
-                  <Target className="w-5 h-5 text-primary" />
+                <CardTitle className="text-xl font-bold flex items-center gap-2 text-primary">
+                  <Target className="w-5 h-5" />
                   JD-Centric Scoring Logic
                 </CardTitle>
                 <CardDescription className="text-slate-500">Pure JD-to-Resume alignment (Domain Agnostic)</CardDescription>
@@ -532,9 +532,9 @@ export default function Results() {
             </Card>
 
             <div className="grid md:grid-cols-2 gap-6">
-              <Card className="border-none shadow-lg shadow-slate-200/50 bg-white">
-                <CardHeader className="pb-3 border-b border-slate-50">
-                  <CardTitle className="text-base font-bold flex items-center gap-2 text-slate-900">
+              <Card className="border-none shadow-xl shadow-orange-200/20 bg-white">
+                <CardHeader className="pb-3 border-b border-orange-50">
+                  <CardTitle className="text-base font-bold flex items-center gap-2 text-primary">
                     <AlertCircle className="w-4 h-4 text-destructive" />
                     Structural Gaps
                   </CardTitle>
@@ -552,9 +552,9 @@ export default function Results() {
                   ))}
                 </CardContent>
               </Card>
-              <Card className="border-none shadow-lg shadow-slate-200/50 bg-white">
-                <CardHeader className="pb-3 border-b border-slate-50">
-                  <CardTitle className="text-base font-bold flex items-center gap-2 text-slate-900">
+              <Card className="border-none shadow-lg shadow-orange-200/20 bg-white">
+                <CardHeader className="pb-3 border-b border-orange-50">
+                  <CardTitle className="text-base font-bold flex items-center gap-2 text-primary">
                     <Zap className="w-4 h-4 text-amber-500" />
                     Tactical Gaps
                   </CardTitle>
@@ -582,11 +582,11 @@ export default function Results() {
             animate={{ opacity: 1, x: 0 }}
             className="lg:col-span-7 space-y-6"
           >
-            <Card className="border-none shadow-xl shadow-slate-200/50 bg-white overflow-hidden">
-              <div className="h-1.5 bg-gradient-to-r from-primary via-indigo-500 to-purple-500" />
+            <Card className="border-none shadow-xl shadow-orange-200/20 bg-white overflow-hidden">
+              <div className="h-1.5 bg-gradient-to-r from-primary to-secondary" />
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-xl font-black text-slate-900">
-                  <Sparkles className="w-5 h-5 text-indigo-500" />
+                <CardTitle className="flex items-center gap-2 text-xl font-black text-primary">
+                  <Sparkles className="w-5 h-5 text-primary" />
                   Improvement Roadmap
                 </CardTitle>
                 <CardDescription className="text-slate-500">Actionable steps to bridge the identified gaps honestly</CardDescription>
@@ -640,36 +640,36 @@ export default function Results() {
             animate={{ opacity: 1, x: 0 }}
             className="lg:col-span-5"
           >
-            <Card className="h-full border-none shadow-xl shadow-slate-200/50 bg-white overflow-hidden">
-              <CardHeader className="bg-slate-900 text-white">
+            <Card className="h-full border-none shadow-xl shadow-orange-200/20 bg-white overflow-hidden">
+              <CardHeader className="bg-primary text-white">
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <FileText className="w-5 h-5 text-primary-foreground/50" />
+                  <Sparkles className="w-5 h-5 text-white/50" />
                   Bullet Optimization
                 </CardTitle>
-                <CardDescription className="text-slate-400">Strictly JD-aligned refinements</CardDescription>
+                <CardDescription className="text-white/70">Strictly JD-aligned refinements</CardDescription>
               </CardHeader>
               <CardContent className="p-6 space-y-6">
                 {MOCK_DATA.aiSuggestions.map((suggestion, idx) => (
                   <div key={idx} className="space-y-4 group">
                     <div className="relative">
-                      <div className="absolute -left-3 top-0 bottom-0 w-1 bg-slate-100 rounded-full" />
+                      <div className="absolute -left-3 top-0 bottom-0 w-1 bg-orange-100 rounded-full" />
                       <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Found Weakness</span>
                       <p className="text-sm text-slate-500 italic leading-relaxed">"{suggestion.original}"</p>
                     </div>
-                    <div className="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 shadow-sm relative group-hover:shadow-md transition-all">
+                    <div className="bg-orange-50/50 p-4 rounded-2xl border border-orange-100 shadow-sm relative group-hover:shadow-md transition-all">
                       <div className="absolute -right-1 -top-1">
-                        <Sparkles className="w-4 h-4 text-emerald-400 animate-pulse" />
+                        <Sparkles className="w-4 h-4 text-orange-400 animate-pulse" />
                       </div>
-                      <span className="text-[10px] font-black text-emerald-700 uppercase tracking-widest mb-1 block">Optimized (JD Context)</span>
+                      <span className="text-[10px] font-black text-primary uppercase tracking-widest mb-1 block">Optimized (JD Context)</span>
                       <p className="text-sm font-bold text-slate-900 leading-relaxed">{suggestion.improved}</p>
-                      <p className="text-[10px] text-slate-500 mt-2 font-medium">Rationale: {suggestion.reason}</p>
+                      <p className="text-[10px] text-slate-500 mt-2 font-medium italic">Rationale: {suggestion.reason}</p>
                     </div>
                   </div>
                 ))}
                 <div className="pt-6 border-t border-slate-100">
                   <p className="text-[10px] font-bold text-slate-400 uppercase text-center tracking-widest leading-loose">
-                    Evaluation completed by Optosaur Engine v2.0<br/>
-                    Strict Alignment Model: Improvement Oriented
+                    Evaluation completed by Optosaur Engine v4.0<br/>
+                    Strict Alignment Model: Universal Intelligence
                   </p>
                 </div>
               </CardContent>
