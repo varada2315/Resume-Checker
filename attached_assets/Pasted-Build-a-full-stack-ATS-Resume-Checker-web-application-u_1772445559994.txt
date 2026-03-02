@@ -1,0 +1,150 @@
+Build a full-stack ATS Resume Checker web application using Python (FastAPI) and a clean modern frontend.
+
+PROJECT NAME: SmartATS
+
+GOAL:
+Users upload:
+1. Resume (PDF or DOCX)
+2. Job Description (text input or .txt file)
+
+The system should:
+- Extract resume text
+- Extract JD text
+- Calculate ATS keyword match percentage
+- Show missing keywords
+- Calculate semantic similarity score using TF-IDF cosine similarity
+- Check basic ATS formatting issues
+- Generate AI-powered improvement suggestions using OpenAI API
+- Display results in a clean dashboard
+
+--------------------------------------------------
+TECH STACK:
+Backend:
+- FastAPI
+- pdfplumber (for PDF parsing)
+- python-docx (for DOCX parsing)
+- scikit-learn (TF-IDF + cosine similarity)
+- OpenAI API for AI suggestions
+
+Frontend:
+- HTML
+- TailwindCSS (via CDN)
+- Vanilla JavaScript (fetch API)
+
+--------------------------------------------------
+FEATURE REQUIREMENTS:
+
+1) FILE UPLOAD
+- Resume upload (PDF/DOCX only)
+- JD upload (.txt) OR text area input
+
+2) TEXT EXTRACTION
+- If PDF → use pdfplumber
+- If DOCX → use python-docx
+- Clean extracted text (remove extra spaces, line breaks)
+
+3) KEYWORD EXTRACTION
+- Tokenize JD
+- Remove stopwords
+- Extract important keywords (nouns, skills, tech terms)
+- Convert all to lowercase
+
+4) MATCHING LOGIC
+
+A) Keyword Match Percentage:
+matched_keywords / total_jd_keywords * 100
+
+B) TF-IDF Cosine Similarity:
+Use sklearn TfidfVectorizer
+Return similarity score between JD and resume
+
+5) MISSING KEYWORDS
+Return list of JD keywords not found in resume
+
+6) ATS FORMAT CHECK
+Basic checks:
+- Check if resume contains:
+   - "experience"
+   - "education"
+   - "skills"
+- Check if email exists (regex)
+- Check if phone number exists
+- Warn if resume length < 300 words
+
+Return structured ATS feedback.
+
+7) AI SUGGESTION ENGINE
+
+Use OpenAI API to:
+- Suggest improved bullet points
+- Suggest missing quantified achievements
+- Suggest skill additions
+
+Prompt to OpenAI:
+"Given this resume and job description, suggest improvements to increase ATS compatibility, improve impact, and add quantified results."
+
+Return:
+- 3 rewritten bullet points
+- General improvement advice
+
+--------------------------------------------------
+UI REQUIREMENTS:
+
+Landing Page:
+- Title: "SmartATS Resume Optimizer"
+- Subtitle: "Check ATS Score. Improve Resume. Get Shortlisted."
+- Upload section with drag-and-drop style box
+- JD input text area
+- Analyze button
+
+Results Page:
+Show:
+- ATS Match Percentage (big bold number)
+- Semantic Similarity Score
+- Missing Keywords (tag style)
+- ATS Format Warnings
+- AI Suggestions section
+- Clean modern card layout
+
+Use Tailwind for styling.
+Make it minimal and premium.
+
+--------------------------------------------------
+PROJECT STRUCTURE:
+
+/app
+    main.py
+    utils/
+        parser.py
+        matching.py
+        ats_checker.py
+        ai_suggestions.py
+/templates
+    index.html
+    results.html
+/static
+    style.css
+
+--------------------------------------------------
+SECURITY:
+- Validate file types
+- Limit file size
+- Use environment variable for OPENAI_API_KEY
+
+--------------------------------------------------
+BONUS:
+Add a simple "Recruiter Simulation Result":
+If match score:
+> 80% → "Highly Likely to be Shortlisted"
+60–80% → "Borderline"
+< 60% → "Low Match – Improve Resume"
+
+--------------------------------------------------
+Make sure:
+- Code is clean and modular
+- Add comments explaining logic
+- Include requirements.txt
+- Include instructions to run:
+    uvicorn app.main:app --reload
+
+Build full working MVP code.
