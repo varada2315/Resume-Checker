@@ -15,7 +15,32 @@ export default function Home() {
   const [jobDescription, setJobDescription] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
-  // ... (previous handlers)
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      setFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleAnalyze = () => {
+    if (!file || !jobDescription) return;
+    setIsAnalyzing(true);
+    setTimeout(() => {
+      setLocation("/results");
+    }, 2000);
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col font-sans selection:bg-primary/20">
