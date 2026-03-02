@@ -1,0 +1,156 @@
+Upgrade Optosaur to follow a "Strict but Improvement-Oriented" evaluation model.
+
+The system must:
+- Be realistic and honest in scoring.
+- Penalize genuine gaps.
+- Clearly explain why points were deducted.
+- Provide actionable improvements for each deduction.
+
+---------------------------------------
+CORE PHILOSOPHY
+---------------------------------------
+
+Optosaur behaves like a strict recruiter who:
+- Identifies real gaps.
+- Does not inflate scores.
+- Explains deductions transparently.
+- Provides practical improvement advice.
+
+---------------------------------------
+STEP 1: JD STRUCTURED EXTRACTION
+---------------------------------------
+
+From the Job Description extract:
+
+1) Mandatory Skills (hard requirements)
+2) Domain Keywords (industry-specific terms)
+3) Required Years of Experience
+4) Role Type (PM, Developer, Data, etc.)
+5) Core Responsibilities
+6) Tools/Tech Requirements
+
+Classify mandatory skills if:
+- Phrases like "must have", "required", "3–5 years", "experience in"
+- Or repeatedly mentioned domain keywords
+
+Return structured JSON.
+
+---------------------------------------
+STEP 2: RESUME STRUCTURED EXTRACTION
+---------------------------------------
+
+Extract from resume:
+
+- Skills list
+- Tools list
+- Domain keywords present
+- Years of experience (estimate from dates)
+- Internship vs full-time differentiation
+- Number of quantified bullet points
+- Product lifecycle ownership indicators
+- Presence of required sections
+
+Return structured JSON.
+
+---------------------------------------
+STEP 3: HONEST WEIGHTED SCORING
+---------------------------------------
+
+Use this scoring model:
+
+Mandatory Skill Match – 30%
+Domain Relevance – 20%
+Experience Alignment – 20%
+Responsibility Alignment – 15%
+Quantified Impact – 10%
+ATS Structure – 5%
+
+Rules:
+
+1) If more than 40% of mandatory skills missing:
+   Cap final score at 65.
+
+2) If domain keywords absent:
+   Deduct 10–15%.
+
+3) If experience below required range:
+   Deduct proportionally.
+
+4) Structure compliance cannot increase score beyond 5%.
+
+5) Final score must strictly align with numeric deductions.
+
+Return:
+- Final score
+- Category breakdown
+- Explicit deduction explanations
+
+Example deduction format:
+-10% Domain gap: No KYC/Fintech experience detected.
+-8% Experience gap: Required 3–5 years, detected ~1 year internship.
+-6% Low quantified impact: Only 1 measurable bullet found.
+
+---------------------------------------
+STEP 4: IMPROVEMENT-ORIENTED AI LAYER
+---------------------------------------
+
+Send structured gap analysis + resume text to OpenAI.
+
+AI must:
+
+1) Explain major gaps honestly.
+2) Clarify which gaps are fixable short-term vs long-term.
+3) Rewrite weak bullets ONLY in context of JD.
+4) Suggest skill additions ONLY if realistically learnable.
+5) Avoid hallucinating experience.
+6) Not inflate profile beyond truth.
+
+Add instruction:
+"If core domain experience is missing, state clearly that it is a structural gap and cannot be solved purely by rewriting."
+
+---------------------------------------
+STEP 5: VERDICT LOGIC
+---------------------------------------
+
+Score > 80:
+Highly Likely to Shortlist
+
+Score 65–80:
+Competitive but Needs Strengthening
+
+Score 50–65:
+Borderline – Domain or Experience Gap
+
+Score < 50:
+Low Match – Significant Misalignment
+
+Verdict must strictly follow numeric score.
+
+---------------------------------------
+UI UPDATE
+---------------------------------------
+
+On results page show:
+
+1) Final Score
+2) Transparent Deduction Summary
+3) Gap Severity Indicator:
+   - Structural Gap (Domain/Experience)
+   - Tactical Gap (Metrics/Clarity)
+4) Improvement Roadmap:
+   - Immediate Fixes (resume edits)
+   - Medium-Term Skill Additions
+   - Long-Term Positioning Advice
+
+---------------------------------------
+IMPORTANT
+---------------------------------------
+
+Optosaur must:
+- Never inflate scores.
+- Never fabricate experience.
+- Clearly differentiate between structural vs tactical gaps.
+- Prioritize honesty over optimism.
+- Provide constructive next steps.
+
+Generate updated backend scoring logic and AI integration code implementing this system.

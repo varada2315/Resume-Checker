@@ -7,27 +7,48 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 
-// Mock Data reflecting the new deterministic scoring logic
+// Mock Data reflecting the new strict but improvement-oriented scoring model
 const MOCK_DATA = {
-  score: 74,
+  score: 64,
   breakdown: {
-    skillMatch: 82,
-    experienceMatch: 65,
-    keywordDensity: 70,
-    quantifiedImpact: 40,
-    structureCompliance: 90,
-    semanticSimilarity: 72
+    mandatorySkills: 45, // 30%
+    domainRelevance: 30,  // 20%
+    experienceAlignment: 50, // 20%
+    responsibilityAlignment: 70, // 15%
+    quantifiedImpact: 20, // 10%
+    atsStructure: 95      // 5%
   },
   status: "Borderline", 
-  matchedKeywords: ["React", "TypeScript", "Node.js", "REST APIs", "Agile", "Frontend Architecture"],
-  missingKeywords: ["GraphQL", "Docker", "AWS", "CI/CD", "Unit Testing"],
-  missingHardSkills: ["Cloud Infrastructure (AWS/Azure)", "Containerization (Docker)", "Automated Testing"],
-  quantifiedBullets: 1,
-  formatIssues: [
-    { type: "warning", message: "Low quantified impact: Only 1 bullet point contains measurable metrics (%, $, numbers)." },
-    { type: "warning", message: "Experience Gap: Required 5+ years, detected ~3.5 years." },
-    { type: "success", message: "ATS-friendly structure detected (Standard sections found)." }
+  verdict: "Borderline – Domain or Experience Gap",
+  deductions: [
+    { value: "-15%", label: "Domain Gap", detail: "No KYC/Fintech experience detected in a high-compliance role." },
+    { value: "-10%", label: "Experience Gap", detail: "Required 5+ years, detected ~3.5 years of relevant tenure." },
+    { value: "-8%", label: "Low Quantified Impact", detail: "Only 1 measurable bullet point found (%, $, numbers)." }
   ],
+  gaps: {
+    structural: [
+      { type: "Domain", message: "Missing Fintech/Banking industry context which is critical for this regulatory role." },
+      { type: "Experience", message: "Senior level requires more ownership of end-to-end product lifecycles." }
+    ],
+    tactical: [
+      { type: "Metrics", message: "Resume lacks scale indicators (user count, performance gains, revenue impact)." },
+      { type: "Clarity", message: "Some responsibility descriptions are too generic and lack JD-specific keywords." }
+    ]
+  },
+  roadmap: {
+    immediate: [
+      "Rewrite 'Worked on APIs' to 'Optimized 5+ Node.js endpoints reducing latency by 40%'.",
+      "Add a 'Key Achievement' section to each role with at least 2 quantified metrics."
+    ],
+    mediumTerm: [
+      "Complete a certification in Cloud Security or Fintech Regulations.",
+      "Contribute to an open-source Fintech project to bridge the domain gap."
+    ],
+    longTerm: [
+      "Target Mid-level roles in Fintech to build the necessary domain authority for Senior positions.",
+      "Focus on taking ownership of architectural decisions in current projects."
+    ]
+  },
   aiSuggestions: [
     {
       original: "Developed new features for the company website.",
@@ -52,40 +73,41 @@ const CircularProgress = ({ value }: { value: number }) => {
 
   const getColor = (val: number) => {
     if (val >= 80) return "text-emerald-500";
-    if (val >= 60) return "text-amber-500";
+    if (val >= 65) return "text-amber-500";
+    if (val >= 50) return "text-orange-500";
     return "text-destructive";
   };
 
   return (
-    <div className="relative w-48 h-48 flex items-center justify-center">
+    <div className="relative w-56 h-56 flex items-center justify-center">
       <svg className="w-full h-full transform -rotate-90 absolute">
         <circle
-          cx="96"
-          cy="96"
-          r="88"
+          cx="112"
+          cy="112"
+          r="100"
           stroke="currentColor"
-          strokeWidth="12"
+          strokeWidth="14"
           fill="transparent"
-          className="text-muted"
+          className="text-muted/30"
         />
         <circle
-          cx="96"
-          cy="96"
-          r="88"
+          cx="112"
+          cy="112"
+          r="100"
           stroke="currentColor"
-          strokeWidth="12"
+          strokeWidth="14"
           fill="transparent"
-          strokeDasharray={88 * 2 * Math.PI}
-          strokeDashoffset={88 * 2 * Math.PI - (progress / 100) * (88 * 2 * Math.PI)}
+          strokeDasharray={100 * 2 * Math.PI}
+          strokeDashoffset={100 * 2 * Math.PI - (progress / 100) * (100 * 2 * Math.PI)}
           className={`transition-all duration-1000 ease-out ${getColor(value)}`}
           strokeLinecap="round"
         />
       </svg>
       <div className="text-center z-10 flex flex-col items-center">
-        <span className={`text-5xl font-black tracking-tighter ${getColor(value)}`}>
-          {progress}%
+        <span className={`text-6xl font-black tracking-tighter ${getColor(value)}`}>
+          {progress}
         </span>
-        <span className="text-sm font-medium text-muted-foreground uppercase tracking-widest mt-1">Final Score</span>
+        <span className="text-sm font-bold text-muted-foreground uppercase tracking-widest mt-1">Match Score</span>
       </div>
     </div>
   );
@@ -96,61 +118,72 @@ import { Logo } from "@/components/Logo";
 export default function Results() {
   const [, setLocation] = useLocation();
 
-  const getStatusColor = (status: string) => {
-    if (MOCK_DATA.score >= 80) return "bg-emerald-100 text-emerald-800 border-emerald-200";
-    if (MOCK_DATA.score >= 60) return "bg-amber-100 text-amber-800 border-amber-200";
+  const getStatusColor = (score: number) => {
+    if (score >= 80) return "bg-emerald-100 text-emerald-800 border-emerald-200";
+    if (score >= 65) return "bg-amber-100 text-amber-800 border-amber-200";
+    if (score >= 50) return "bg-orange-100 text-orange-800 border-orange-200";
     return "bg-red-100 text-red-800 border-red-200";
-  };
-
-  const getVerdict = () => {
-    if (MOCK_DATA.score >= 80) return "Highly Likely to be Shortlisted";
-    if (MOCK_DATA.score >= 60) return "Borderline Match";
-    return "Low Match – Improve Resume";
   };
 
   const getMood = () => {
     if (MOCK_DATA.score >= 80) return "confident";
-    if (MOCK_DATA.score >= 60) return "neutral";
+    if (MOCK_DATA.score >= 65) return "neutral";
     return "concerned";
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col font-sans">
-      <header className="border-b bg-white/50 backdrop-blur-md sticky top-0 z-10">
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col font-sans selection:bg-primary/10">
+      <header className="border-b bg-white/80 backdrop-blur-xl sticky top-0 z-20">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => setLocation("/")} className="rounded-full">
+            <Button variant="ghost" size="icon" onClick={() => setLocation("/")} className="rounded-full hover:bg-slate-100">
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div className="flex items-center gap-2">
               <Logo className="w-8 h-8 text-primary" />
-              <span className="text-lg font-bold tracking-tight">Optosaur</span>
+              <span className="text-lg font-black tracking-tight text-slate-900">Optosaur</span>
             </div>
           </div>
-          <Button variant="outline" size="sm" onClick={() => setLocation("/")}>
+          <Button variant="default" size="sm" onClick={() => setLocation("/")} className="rounded-full shadow-lg shadow-primary/20">
             Analyze New Resume
           </Button>
         </div>
       </header>
 
       <main className="flex-1 container mx-auto px-4 py-8 max-w-6xl">
+        <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-black tracking-tight text-slate-900">Analysis Report</h1>
+            <p className="text-slate-500 mt-1">Strict, improvement-oriented evaluation for high-stakes roles.</p>
+          </div>
+          <Badge variant="outline" className={`px-4 py-1.5 rounded-full text-sm font-bold shadow-sm ${getStatusColor(MOCK_DATA.score)}`}>
+            {MOCK_DATA.verdict}
+          </Badge>
+        </div>
         
-        <div className="grid lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid lg:grid-cols-12 gap-6 mb-8">
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="lg:col-span-1"
+            className="lg:col-span-4"
           >
-            <Card className="h-full glass-card border-none shadow-md relative overflow-hidden flex flex-col items-center justify-center p-8 text-center">
-              <div className="absolute top-4 left-4">
-                <Logo className="w-12 h-12 text-primary/20" mood={getMood()} />
+            <Card className="h-full border-none shadow-xl shadow-slate-200/50 bg-white relative overflow-hidden flex flex-col items-center justify-center p-8 text-center">
+              <div className="absolute top-6 left-6 opacity-10">
+                <Logo className="w-20 h-20 text-primary" mood={getMood()} />
               </div>
-              <h2 className="text-lg font-semibold mb-6">Deterministic ATS Score</h2>
+              <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-8">Strict Evaluation</h2>
               <CircularProgress value={MOCK_DATA.score} />
-              <div className="mt-8 w-full">
-                <div className={`px-4 py-3 rounded-xl border font-bold text-sm inline-flex items-center gap-2 ${getStatusColor(MOCK_DATA.status)}`}>
-                  {getVerdict()}
-                </div>
+              <div className="mt-10 w-full space-y-3">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Transparent Deductions</p>
+                {MOCK_DATA.deductions.map((d, i) => (
+                  <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 group hover:border-destructive/30 transition-colors">
+                    <div className="text-left">
+                      <p className="text-xs font-bold text-slate-900">{d.label}</p>
+                      <p className="text-[10px] text-slate-500">{d.detail}</p>
+                    </div>
+                    <span className="text-sm font-black text-destructive">{d.value}</span>
+                  </div>
+                ))}
               </div>
             </Card>
           </motion.div>
@@ -158,145 +191,207 @@ export default function Results() {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="lg:col-span-2"
+            className="lg:col-span-8 space-y-6"
           >
-            <Card className="h-full glass-card border-none shadow-md">
-              <CardHeader>
-                <CardTitle className="text-xl flex items-center gap-2">
+            <Card className="border-none shadow-xl shadow-slate-200/50 bg-white">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xl font-bold flex items-center gap-2 text-slate-900">
                   <Target className="w-5 h-5 text-primary" />
-                  Weighted Scoring Breakdown
+                  Weighted Scoring Logic
                 </CardTitle>
-                <CardDescription>Based on deterministic analysis of skills, experience, and structure</CardDescription>
+                <CardDescription className="text-slate-500">How our strict model calculated your match percentage</CardDescription>
               </CardHeader>
-              <CardContent className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-muted-foreground">Skill Match (30%)</span>
-                      <span className="font-bold">{MOCK_DATA.breakdown.skillMatch}%</span>
+              <CardContent className="grid md:grid-cols-2 gap-x-12 gap-y-6 py-6">
+                <div className="space-y-5">
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm font-bold text-slate-700">
+                      <span>Mandatory Skills (30%)</span>
+                      <span className={MOCK_DATA.breakdown.mandatorySkills < 50 ? "text-destructive" : ""}>{MOCK_DATA.breakdown.mandatorySkills}%</span>
                     </div>
-                    <Progress value={MOCK_DATA.breakdown.skillMatch} className="h-1.5" />
+                    <Progress value={MOCK_DATA.breakdown.mandatorySkills} className="h-2 bg-slate-100" />
                   </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-muted-foreground">Experience Alignment (20%)</span>
-                      <span className="font-bold">{MOCK_DATA.breakdown.experienceMatch}%</span>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm font-bold text-slate-700">
+                      <span>Domain Relevance (20%)</span>
+                      <span>{MOCK_DATA.breakdown.domainRelevance}%</span>
                     </div>
-                    <Progress value={MOCK_DATA.breakdown.experienceMatch} className="h-1.5" />
+                    <Progress value={MOCK_DATA.breakdown.domainRelevance} className="h-2 bg-slate-100" />
                   </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-muted-foreground">Keyword Density (15%)</span>
-                      <span className="font-bold">{MOCK_DATA.breakdown.keywordDensity}%</span>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm font-bold text-slate-700">
+                      <span>Experience Alignment (20%)</span>
+                      <span>{MOCK_DATA.breakdown.experienceAlignment}%</span>
                     </div>
-                    <Progress value={MOCK_DATA.breakdown.keywordDensity} className="h-1.5" />
+                    <Progress value={MOCK_DATA.breakdown.experienceAlignment} className="h-2 bg-slate-100" />
                   </div>
                 </div>
-                <div className="space-y-4">
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-muted-foreground">Quantified Impact (15%)</span>
-                      <span className="font-bold text-destructive">{MOCK_DATA.breakdown.quantifiedImpact}%</span>
+                <div className="space-y-5">
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm font-bold text-slate-700">
+                      <span>Responsibilities (15%)</span>
+                      <span>{MOCK_DATA.breakdown.responsibilityAlignment}%</span>
                     </div>
-                    <Progress value={MOCK_DATA.breakdown.quantifiedImpact} className="h-1.5 bg-destructive/10" />
+                    <Progress value={MOCK_DATA.breakdown.responsibilityAlignment} className="h-2 bg-slate-100" />
                   </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-muted-foreground">Structure Compliance (10%)</span>
-                      <span className="font-bold">{MOCK_DATA.breakdown.structureCompliance}%</span>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm font-bold text-slate-700">
+                      <span>Quantified Impact (10%)</span>
+                      <span className="text-destructive">{MOCK_DATA.breakdown.quantifiedImpact}%</span>
                     </div>
-                    <Progress value={MOCK_DATA.breakdown.structureCompliance} className="h-1.5" />
+                    <Progress value={MOCK_DATA.breakdown.quantifiedImpact} className="h-2 bg-destructive/10" />
                   </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-muted-foreground">Semantic Similarity (10%)</span>
-                      <span className="font-bold">{MOCK_DATA.breakdown.semanticSimilarity}%</span>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm font-bold text-slate-700">
+                      <span>ATS Structure (5%)</span>
+                      <span className="text-emerald-600">{MOCK_DATA.breakdown.atsStructure}%</span>
                     </div>
-                    <Progress value={MOCK_DATA.breakdown.semanticSimilarity} className="h-1.5" />
+                    <Progress value={MOCK_DATA.breakdown.atsStructure} className="h-2 bg-slate-100" />
                   </div>
                 </div>
               </CardContent>
             </Card>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-lg shadow-slate-200/50 bg-white">
+                <CardHeader className="pb-3 border-b border-slate-50">
+                  <CardTitle className="text-base font-bold flex items-center gap-2 text-slate-900">
+                    <AlertCircle className="w-4 h-4 text-destructive" />
+                    Structural Gaps
+                  </CardTitle>
+                  <CardDescription className="text-[10px] uppercase font-bold text-slate-400 tracking-tighter">Requires significant effort/tenure</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-4 space-y-3">
+                  {MOCK_DATA.gaps.structural.map((gap, i) => (
+                    <div key={i} className="flex gap-3 items-start group">
+                      <div className="mt-1 w-1.5 h-1.5 rounded-full bg-destructive shrink-0" />
+                      <div>
+                        <span className="text-[10px] font-black text-destructive uppercase tracking-tighter block">{gap.type}</span>
+                        <p className="text-xs text-slate-600 leading-relaxed font-medium">{gap.message}</p>
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+              <Card className="border-none shadow-lg shadow-slate-200/50 bg-white">
+                <CardHeader className="pb-3 border-b border-slate-50">
+                  <CardTitle className="text-base font-bold flex items-center gap-2 text-slate-900">
+                    <Zap className="w-4 h-4 text-amber-500" />
+                    Tactical Gaps
+                  </CardTitle>
+                  <CardDescription className="text-[10px] uppercase font-bold text-slate-400 tracking-tighter">Fixable via resume refinement</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-4 space-y-3">
+                  {MOCK_DATA.gaps.tactical.map((gap, i) => (
+                    <div key={i} className="flex gap-3 items-start">
+                      <div className="mt-1 w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
+                      <div>
+                        <span className="text-[10px] font-black text-amber-600 uppercase tracking-tighter block">{gap.type}</span>
+                        <p className="text-xs text-slate-600 leading-relaxed font-medium">{gap.message}</p>
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            </div>
           </motion.div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-1 space-y-6">
-            <Card className="glass-card border-none shadow-md">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <AlertCircle className="w-5 h-5 text-destructive" />
-                  Critical Gaps
+        <div className="grid lg:grid-cols-12 gap-6">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="lg:col-span-7 space-y-6"
+          >
+            <Card className="border-none shadow-xl shadow-slate-200/50 bg-white overflow-hidden">
+              <div className="h-1.5 bg-gradient-to-r from-primary via-indigo-500 to-purple-500" />
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-xl font-black text-slate-900">
+                  <Sparkles className="w-5 h-5 text-indigo-500" />
+                  Improvement Roadmap
                 </CardTitle>
+                <CardDescription className="text-slate-500">Actionable steps to bridge the identified gaps honestly</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-8 pb-8">
                 <div>
-                  <h4 className="text-xs font-bold uppercase text-muted-foreground mb-2">Missing Hard Skills</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {MOCK_DATA.missingHardSkills.map(skill => (
-                      <Badge key={skill} variant="outline" className="text-destructive border-destructive/30 bg-destructive/5 font-medium">
-                        {skill}
-                      </Badge>
+                  <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                    <span className="w-8 h-px bg-slate-200" /> Immediate Fixes (Resume Edits)
+                  </h4>
+                  <ul className="space-y-3">
+                    {MOCK_DATA.roadmap.immediate.map((step, i) => (
+                      <li key={i} className="flex gap-3 items-start bg-slate-50/50 p-3 rounded-xl border border-slate-100 hover:border-primary/20 transition-all">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                        <span className="text-sm font-medium text-slate-700">{step}</span>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
-                <div className="pt-2 border-t">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Quantified Bullets</span>
-                    <span className="font-bold text-destructive">{MOCK_DATA.quantifiedBullets} found</span>
-                  </div>
-                  <p className="text-[10px] text-muted-foreground mt-1 italic">Min. 2 recommended for high score</p>
+                <div>
+                  <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                    <span className="w-8 h-px bg-slate-200" /> Medium-Term Skill Additions
+                  </h4>
+                  <ul className="space-y-3">
+                    {MOCK_DATA.roadmap.mediumTerm.map((step, i) => (
+                      <li key={i} className="flex gap-3 items-start bg-indigo-50/30 p-3 rounded-xl border border-indigo-100/50">
+                        <Target className="w-4 h-4 text-indigo-500 shrink-0 mt-0.5" />
+                        <span className="text-sm font-medium text-slate-700">{step}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                    <span className="w-8 h-px bg-slate-200" /> Long-Term Positioning
+                  </h4>
+                  <ul className="space-y-3">
+                    {MOCK_DATA.roadmap.longTerm.map((step, i) => (
+                      <li key={i} className="flex gap-3 items-start bg-purple-50/30 p-3 rounded-xl border border-purple-100/50">
+                        <Zap className="w-4 h-4 text-purple-500 shrink-0 mt-0.5" />
+                        <span className="text-sm font-medium text-slate-700">{step}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </CardContent>
             </Card>
-
-            <Card className="glass-card border-none shadow-md">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-                  Validation Rules
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3">
-                  {MOCK_DATA.formatIssues.map((issue, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-xs p-2 rounded-lg bg-white/50 border">
-                      {issue.type === "success" ? <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" /> : <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0" />}
-                      <span>{issue.message}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
+          </motion.div>
 
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="lg:col-span-2"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="lg:col-span-5"
           >
-            <Card className="h-full glass-card border-none shadow-md overflow-hidden">
-              <div className="p-1 bg-gradient-to-r from-primary/30 via-indigo-400/30 to-purple-400/30" />
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-xl">
-                  <Zap className="w-5 h-5 text-indigo-500 fill-indigo-500/20" />
-                  Evidence-Based AI Suggestions
+            <Card className="h-full border-none shadow-xl shadow-slate-200/50 bg-white overflow-hidden">
+              <CardHeader className="bg-slate-900 text-white">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <FileText className="w-5 h-5 text-primary-foreground/50" />
+                  Bullet Optimization
                 </CardTitle>
-                <CardDescription>Generated based on structured skill gaps and missing metrics</CardDescription>
+                <CardDescription className="text-slate-400">Strictly JD-aligned refinements</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
+              <CardContent className="p-6 space-y-6">
                 {MOCK_DATA.aiSuggestions.map((suggestion, idx) => (
-                  <div key={idx} className="p-5 rounded-2xl bg-white border shadow-sm group hover:shadow-md transition-all">
-                    <div className="mb-4">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1 block">Context: {suggestion.reason}</span>
-                      <p className="text-sm text-foreground/60 line-through decoration-destructive/20">{suggestion.original}</p>
+                  <div key={idx} className="space-y-4 group">
+                    <div className="relative">
+                      <div className="absolute -left-3 top-0 bottom-0 w-1 bg-slate-100 rounded-full" />
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Found Weakness</span>
+                      <p className="text-sm text-slate-500 italic leading-relaxed">"{suggestion.original}"</p>
                     </div>
-                    <div className="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 mb-1 block">Optimized Bullet</span>
-                      <p className="text-sm font-medium text-foreground">{suggestion.improved}</p>
+                    <div className="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 shadow-sm relative group-hover:shadow-md transition-all">
+                      <div className="absolute -right-1 -top-1">
+                        <Sparkles className="w-4 h-4 text-emerald-400 animate-pulse" />
+                      </div>
+                      <span className="text-[10px] font-black text-emerald-700 uppercase tracking-widest mb-1 block">Optimized (JD Context)</span>
+                      <p className="text-sm font-bold text-slate-900 leading-relaxed">{suggestion.improved}</p>
+                      <p className="text-[10px] text-slate-500 mt-2 font-medium">Rationale: {suggestion.reason}</p>
                     </div>
                   </div>
                 ))}
+                <div className="pt-6 border-t border-slate-100">
+                  <p className="text-[10px] font-bold text-slate-400 uppercase text-center tracking-widest leading-loose">
+                    Evaluation completed by Optosaur Engine v2.0<br/>
+                    Strict Alignment Model: Improvement Oriented
+                  </p>
+                </div>
               </CardContent>
             </Card>
           </motion.div>
