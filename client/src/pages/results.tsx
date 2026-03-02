@@ -97,24 +97,24 @@ const CircularProgress = ({ value }: { value: number }) => {
   }, [value]);
 
   const getColor = (val: number) => {
-    if (val >= 80) return "text-emerald-500";
+    if (val >= 80) return "text-[#3E8E41]";
     if (val >= 65) return "text-amber-500";
     if (val >= 50) return "text-orange-500";
-    return "text-destructive";
+    return "text-red-500";
   };
 
   const getProbColor = (val: number) => {
-    if (val >= 75) return "text-emerald-500";
+    if (val >= 75) return "text-[#3E8E41]";
     if (val >= 60) return "text-amber-500";
     if (val >= 40) return "text-orange-500";
-    return "text-destructive";
+    return "text-red-500";
   };
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center gap-8 w-full max-w-2xl mx-auto">
+    <div className="flex flex-col md:flex-row items-center justify-center gap-12 w-full max-w-2xl mx-auto">
       <div className="relative w-48 h-48 flex items-center justify-center">
         <svg className="w-full h-full transform -rotate-90 absolute">
-          <circle cx="96" cy="96" r="86" stroke="currentColor" strokeWidth="12" fill="transparent" className="text-muted/20" />
+          <circle cx="96" cy="96" r="86" stroke="currentColor" strokeWidth="12" fill="transparent" className="text-gray-100" />
           <circle
             cx="96" cy="96" r="86" stroke="currentColor" strokeWidth="12" fill="transparent"
             strokeDasharray={86 * 2 * Math.PI}
@@ -124,14 +124,14 @@ const CircularProgress = ({ value }: { value: number }) => {
           />
         </svg>
         <div className="text-center z-10 flex flex-col items-center">
-          <span className={`text-5xl font-black tracking-tighter ${getColor(value)}`}>{progress}%</span>
-          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-1">Match Score</span>
+          <span className={`text-5xl font-bold tracking-tighter ${getColor(value)}`}>{progress}%</span>
+          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Match Score</span>
         </div>
       </div>
 
       <div className="relative w-40 h-40 flex items-center justify-center">
         <svg className="w-full h-full transform -rotate-90 absolute">
-          <circle cx="80" cy="80" r="70" stroke="currentColor" strokeWidth="10" fill="transparent" className="text-muted/20" />
+          <circle cx="80" cy="80" r="70" stroke="currentColor" strokeWidth="10" fill="transparent" className="text-gray-100" />
           <circle
             cx="80" cy="80" r="70" stroke="currentColor" strokeWidth="10" fill="transparent"
             strokeDasharray={70 * 2 * Math.PI}
@@ -141,8 +141,8 @@ const CircularProgress = ({ value }: { value: number }) => {
           />
         </svg>
         <div className="text-center z-10 flex flex-col items-center">
-          <span className={`text-4xl font-black tracking-tighter ${getProbColor(MOCK_DATA.shortlistProbability)}`}>{MOCK_DATA.shortlistProbability}%</span>
-          <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1">Shortlist Prob.</span>
+          <span className={`text-4xl font-bold tracking-tighter ${getProbColor(MOCK_DATA.shortlistProbability)}`}>{MOCK_DATA.shortlistProbability}%</span>
+          <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-1">Shortlist Prob.</span>
         </div>
       </div>
     </div>
@@ -152,32 +152,32 @@ const CircularProgress = ({ value }: { value: number }) => {
 const DeductionItem = ({ d }: { d: any }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="flex flex-col rounded-xl bg-slate-50 border border-slate-100 overflow-hidden group hover:border-primary/20 transition-all">
-      <button onClick={() => setIsOpen(!isOpen)} className="flex items-center justify-between p-3 text-left w-full">
+    <div className="flex flex-col rounded-xl bg-gray-50 border border-gray-100 overflow-hidden group hover:border-[#3E8E41]/20 transition-all">
+      <button onClick={() => setIsOpen(!isOpen)} className="flex items-center justify-between p-4 text-left w-full">
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <p className="text-xs font-bold text-slate-900">{d.label}</p>
-            <Badge variant="outline" className="text-[8px] py-0 px-1 font-black uppercase tracking-tighter h-3.5 border-slate-200 text-slate-400">{d.requirement.category}</Badge>
+            <p className="text-xs font-bold text-gray-900">{d.label}</p>
+            <Badge variant="outline" className="text-[8px] py-0 px-1 font-bold uppercase tracking-tighter h-3.5 border-gray-200 text-gray-400">{d.requirement.category}</Badge>
           </div>
-          <p className="text-[10px] text-slate-500 line-clamp-1">{d.detail}</p>
+          <p className="text-[10px] text-gray-500 line-clamp-1">{d.detail}</p>
         </div>
         <div className="flex items-center gap-3 ml-4">
-          <span className="text-sm font-black text-destructive">{d.value}</span>
-          {isOpen ? <ChevronUp className="w-3 h-3 text-slate-400" /> : <ChevronDown className="w-3 h-3 text-slate-400" />}
+          <span className="text-sm font-bold text-red-500">{d.value}</span>
+          {isOpen ? <ChevronUp className="w-3 h-3 text-gray-400" /> : <ChevronDown className="w-3 h-3 text-gray-400" />}
         </div>
       </button>
       <AnimatePresence>
         {isOpen && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="border-t border-slate-100 bg-white p-3 space-y-3">
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="border-t border-gray-100 bg-white p-4 space-y-3">
             <div>
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1 mb-1"><FileText className="w-2.5 h-2.5" /> JD Requirement</span>
-              <p className="text-[11px] text-slate-700 font-medium leading-relaxed italic">"{d.requirement.sentence}"</p>
+              <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1 mb-1"><FileText className="w-2.5 h-2.5" /> JD Requirement</span>
+              <p className="text-[11px] text-gray-700 font-medium leading-relaxed italic">"{d.requirement.sentence}"</p>
             </div>
             <div>
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1 mb-1"><Info className="w-2.5 h-2.5" /> Resume Match Status</span>
+              <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1 mb-1"><Info className="w-2.5 h-2.5" /> Resume Match Status</span>
               <div className="flex items-center gap-2">
-                <Badge className={`text-[9px] font-bold px-1.5 py-0 ${d.requirement.status === "Unmatched" ? "bg-red-100 text-red-700 border-red-200" : "bg-amber-100 text-amber-700 border-amber-200"}`}>{d.requirement.status}</Badge>
-                <p className="text-[11px] text-slate-600 font-medium">{d.requirement.evidence}</p>
+                <Badge className={`text-[9px] font-bold px-1.5 py-0 ${d.requirement.status === "Unmatched" ? "bg-red-50 text-red-700 border-red-100" : "bg-amber-50 text-amber-700 border-amber-100"}`}>{d.requirement.status}</Badge>
+                <p className="text-[11px] text-gray-600 font-medium">{d.requirement.evidence}</p>
               </div>
             </div>
           </motion.div>
@@ -190,21 +190,21 @@ const DeductionItem = ({ d }: { d: any }) => {
 const ConfidenceBreakdownItem = ({ gap }: { gap: any }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="flex flex-col rounded-lg border border-slate-100 overflow-hidden bg-white/50">
-      <button onClick={() => setIsOpen(!isOpen)} className="flex items-center justify-between p-2 text-left w-full hover:bg-slate-50 transition-colors">
+    <div className="flex flex-col rounded-lg border border-gray-100 overflow-hidden bg-white/50">
+      <button onClick={() => setIsOpen(!isOpen)} className="flex items-center justify-between p-2 text-left w-full hover:bg-gray-50 transition-colors">
         <div className="flex-1">
           <div className="flex justify-between items-center mb-1">
-            <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider">{gap.component}</span>
-            <span className="text-[10px] font-black text-slate-900">{gap.score}/{gap.max}</span>
+            <span className="text-[9px] font-bold text-gray-500 uppercase tracking-wider">{gap.component}</span>
+            <span className="text-[10px] font-bold text-gray-900">{gap.score}/{gap.max}</span>
           </div>
-          <Progress value={(gap.score / gap.max) * 100} className="h-1 bg-slate-100" />
+          <Progress value={(gap.score / gap.max) * 100} className="h-1 bg-gray-100" />
         </div>
-        <div className="ml-2">{isOpen ? <ChevronUp className="w-3 h-3 text-slate-400" /> : <ChevronDown className="w-3 h-3 text-slate-400" />}</div>
+        <div className="ml-2">{isOpen ? <ChevronUp className="w-3 h-3 text-gray-400" /> : <ChevronDown className="w-3 h-3 text-gray-400" />}</div>
       </button>
       <AnimatePresence>
         {isOpen && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="px-2 pb-2">
-            <p className="text-[9px] text-slate-500 leading-tight italic border-t border-slate-50 pt-1.5">{gap.detail}</p>
+            <p className="text-[9px] text-gray-500 leading-tight italic border-t border-gray-50 pt-1.5">{gap.detail}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -214,75 +214,104 @@ const ConfidenceBreakdownItem = ({ gap }: { gap: any }) => {
 
 export default function Results() {
   const [, setLocation] = useLocation();
+
   return (
-    <div className="min-h-screen bg-background flex flex-col font-sans selection:bg-primary/10 bg-[radial-gradient(circle_at_top_right,_var(--secondary)_0%,_transparent_25%),radial-gradient(circle_at_bottom_left,_var(--secondary)_0%,_transparent_25%)]">
-      <header className="border-b bg-white/80 backdrop-blur-xl sticky top-0 z-20">
+    <div className="min-h-screen bg-[#F9FAFB] flex flex-col font-sans selection:bg-[#3E8E41]/10">
+      <header className="bg-white border-b border-gray-100 sticky top-0 z-20">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => setLocation("/")} className="rounded-full hover:bg-orange-50 text-primary"><ArrowLeft className="w-5 h-5" /></Button>
-            <div className="flex items-center gap-2">
-              <Logo className="w-8 h-8" />
-              <span className="text-lg font-black tracking-tight text-primary">Optosaur</span>
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" size="icon" onClick={() => setLocation("/")} className="rounded-full hover:bg-gray-50 text-gray-500">
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
+            <div className="flex items-center gap-3">
+              <Logo className="h-10 w-auto object-contain" />
+              <span className="text-xl font-bold tracking-tight text-[#111827]">Optosaur</span>
             </div>
           </div>
-          <Button variant="default" size="sm" onClick={() => setLocation("/")} className="rounded-full shadow-lg shadow-primary/20">Analyze New Resume</Button>
+          <Button onClick={() => setLocation("/")} className="bg-[#3E8E41] hover:bg-[#347A39] text-white px-6 py-2 rounded-xl shadow-md transition-all">
+            Analyze New Resume
+          </Button>
         </div>
       </header>
 
-      <main className="flex-1 container mx-auto px-4 py-8 max-w-6xl">
-        <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <main className="flex-1 container mx-auto px-4 py-12 max-w-6xl">
+        <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-black tracking-tight text-primary">Analysis Report</h1>
-            <p className="text-slate-500 mt-1">Diagnostic-first evaluation for professional credibility.</p>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Analysis Report</h1>
+            <p className="text-gray-500 mt-1">Diagnostic-first evaluation for professional credibility.</p>
           </div>
-          <Badge variant="outline" className={`px-4 py-1.5 rounded-full text-sm font-bold shadow-sm bg-primary/10 text-primary border-primary/20`}>{MOCK_DATA.verdict}</Badge>
+          <Badge variant="outline" className="px-4 py-1.5 rounded-full text-sm font-bold bg-white border-gray-100 text-gray-600 shadow-sm">
+            {MOCK_DATA.verdict}
+          </Badge>
         </div>
         
-        <div className="grid lg:grid-cols-12 gap-6 mb-8">
+        <div className="grid lg:grid-cols-12 gap-8 mb-8">
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="lg:col-span-4">
-            <Card className="h-full border-none shadow-xl shadow-orange-200/20 bg-white relative overflow-hidden flex flex-col items-center justify-center p-8 text-center">
-              <div className="absolute top-6 left-6 opacity-20"><Logo className="w-20 h-20" /></div>
-              <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-8">V4 Prediction Engine</h2>
+            <Card className="h-full bg-white border border-gray-100 rounded-2xl shadow-sm p-8 flex flex-col items-center justify-center text-center">
+              <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-8">V4 Prediction Engine</h2>
               <CircularProgress value={MOCK_DATA.score} />
-              <div className="mt-6 w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 relative overflow-hidden group">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-1.5"><ShieldCheck className="w-4 h-4 text-primary" /><span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Confidence Score</span></div>
-                  <TooltipProvider><Tooltip><TooltipTrigger asChild><HelpCircle className="w-3.5 h-3.5 text-slate-300 cursor-help hover:text-primary transition-colors" /></TooltipTrigger><TooltipContent className="max-w-[200px] text-[10px] leading-relaxed p-3">Evaluation accuracy confidence.</TooltipContent></Tooltip></TooltipProvider>
+              <div className="mt-10 w-full p-5 rounded-xl bg-gray-50 border border-gray-100">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-1.5 text-gray-400">
+                    <ShieldCheck className="w-4 h-4 text-[#3E8E41]" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest">Confidence Score</span>
+                  </div>
                 </div>
-                <div className="flex items-end justify-between mb-2"><span className="text-2xl font-black text-slate-900 leading-none">{MOCK_DATA.confidenceScore}%</span><Badge variant="secondary" className="text-[9px] h-4 font-bold bg-white border-slate-200">{MOCK_DATA.confidenceLabel}</Badge></div>
-                <Progress value={MOCK_DATA.confidenceScore} className="h-1 bg-slate-200" />
-                <div className="mt-4 space-y-2">{MOCK_DATA.confidenceGaps.map((gap, i) => (<ConfidenceBreakdownItem key={i} gap={gap} />))}</div>
+                <div className="flex items-end justify-between mb-2">
+                  <span className="text-2xl font-bold text-gray-900 leading-none">{MOCK_DATA.confidenceScore}%</span>
+                  <Badge variant="secondary" className="text-[9px] h-4 font-bold bg-white border-gray-100 text-gray-500">
+                    {MOCK_DATA.confidenceLabel}
+                  </Badge>
+                </div>
+                <Progress value={MOCK_DATA.confidenceScore} className="h-1 bg-gray-200" />
               </div>
-              <div className="mt-10 w-full space-y-3">
-                <div className="flex items-center justify-between mb-1"><p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Shortlist Logic & Penalties</p><Badge variant="secondary" className="text-[9px] h-4">Decision Mode</Badge></div>
-                <div className="p-3 rounded-xl bg-red-50/50 border border-red-100 text-[11px] text-red-700 leading-relaxed"><p className="font-bold flex items-center gap-1.5 mb-1"><AlertTriangle className="w-3 h-3" /> Shortlist Probability Capped</p>1 mandatory requirement missing → Capped at 65%.</div>
+              <div className="mt-10 w-full space-y-4">
+                <div className="flex items-center justify-between mb-1">
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Shortlist Logic & Penalties</p>
+                </div>
+                <div className="p-4 rounded-xl bg-red-50 border border-red-100 text-[12px] text-red-700 leading-relaxed">
+                  <p className="font-bold flex items-center gap-1.5 mb-1">
+                    <AlertTriangle className="w-3 h-3" /> Shortlist Probability Capped
+                  </p>
+                  1 mandatory requirement missing → Capped at 65%.
+                </div>
                 {MOCK_DATA.deductions.map((d, i) => (<DeductionItem key={i} d={d} />))}
               </div>
             </Card>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="lg:col-span-8 space-y-6">
-            <Card className="border-none shadow-xl shadow-orange-200/20 bg-white overflow-hidden">
-              <div className="p-1 bg-gradient-to-r from-primary/20 to-secondary/40" />
-              <CardHeader className="pb-2"><CardTitle className="text-xl font-bold flex items-center gap-2 text-primary"><FileText className="w-5 h-5" />Requirement Mapping Table</CardTitle><CardDescription className="text-slate-500">Atomic decomposition of JD requirements matched against resume evidence.</CardDescription></CardHeader>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="lg:col-span-8 space-y-8">
+            <Card className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
+              <CardHeader className="pb-4 border-b border-gray-50">
+                <CardTitle className="text-xl font-bold flex items-center gap-2 text-gray-900">
+                  <FileText className="w-5 h-5 text-[#3E8E41]" />
+                  Requirement Mapping Table
+                </CardTitle>
+                <CardDescription className="text-gray-500">Atomic decomposition matched against resume evidence.</CardDescription>
+              </CardHeader>
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-sm">
-                    <thead className="bg-slate-50 border-y border-slate-100 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
-                      <tr><th className="px-6 py-3">JD Requirement</th><th className="px-6 py-3">Resume Evidence</th><th className="px-6 py-3">Match</th><th className="px-6 py-3">Gap</th></tr>
+                    <thead className="bg-gray-50 text-[10px] uppercase font-bold text-gray-400 tracking-wider">
+                      <tr>
+                        <th className="px-6 py-4">JD Requirement</th>
+                        <th className="px-6 py-4">Resume Evidence</th>
+                        <th className="px-6 py-4">Match</th>
+                        <th className="px-6 py-4">Gap</th>
+                      </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-50">
+                    <tbody className="divide-y divide-gray-50">
                       {[
                         { req: "Design scalable cloud architecture using AWS/Azure", evidence: "Not explicitly found", strength: "No Match", gap: "Technical", color: "text-red-500" },
                         { req: "7+ years of Software Engineering experience", evidence: "5.5 years across 3 roles", strength: "Moderate", gap: "Seniority", color: "text-amber-500" },
-                        { req: "High-concurrency systems & scalability", evidence: "Optimized distributed systems", strength: "Strong", gap: "None", color: "text-emerald-500" },
-                        { req: "CI/CD and Automation proficiency", evidence: "Implemented Jenkins pipelines", strength: "Strong", gap: "None", color: "text-emerald-500" }
+                        { req: "High-concurrency systems & scalability", evidence: "Optimized distributed systems", strength: "Strong", gap: "None", color: "text-[#3E8E41]" },
+                        { req: "CI/CD and Automation proficiency", evidence: "Implemented Jenkins pipelines", strength: "Strong", gap: "None", color: "text-[#3E8E41]" }
                       ].map((item, i) => (
-                        <tr key={i} className="hover:bg-slate-50/50 transition-colors">
-                          <td className="px-6 py-4 font-medium text-slate-700 max-w-xs">{item.req}</td>
-                          <td className="px-6 py-4 text-slate-500 italic">"{item.evidence}"</td>
-                          <td className={`px-6 py-4 font-bold ${item.color}`}>{item.strength}</td>
-                          <td className="px-6 py-4"><Badge variant="outline" className="text-[10px]">{item.gap}</Badge></td>
+                        <tr key={i} className="hover:bg-gray-50/50 transition-colors">
+                          <td className="px-6 py-5 font-medium text-gray-900 max-w-xs">{item.req}</td>
+                          <td className="px-6 py-5 text-gray-500 italic">"{item.evidence}"</td>
+                          <td className={`px-6 py-5 font-bold ${item.color}`}>{item.strength}</td>
+                          <td className="px-6 py-5"><Badge variant="outline" className="text-[10px] border-gray-100 text-gray-400">{item.gap}</Badge></td>
                         </tr>
                       ))}
                     </tbody>
@@ -291,37 +320,57 @@ export default function Results() {
               </CardContent>
             </Card>
 
-            <Card className="border-none shadow-xl shadow-orange-200/20 bg-white">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xl font-bold flex items-center gap-2 text-primary"><Sparkles className="w-5 h-5" />Improvement Guidance</CardTitle>
-                <CardDescription className="text-slate-500">Diagnostic analysis and structured templates for resume strengthening.</CardDescription>
+            <Card className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
+              <CardHeader className="pb-4 border-b border-gray-50">
+                <CardTitle className="text-xl font-bold flex items-center gap-2 text-gray-900">
+                  <Sparkles className="w-5 h-5 text-[#3E8E41]" />
+                  Improvement Guidance
+                </CardTitle>
+                <CardDescription className="text-gray-500">Diagnostic analysis and structured templates.</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-8 py-6">
-                <div className="space-y-4">
-                  <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 flex items-center gap-2"><AlertCircle className="w-4 h-4 text-destructive" />Structural Gaps</h3>
-                  <div className="grid gap-3">
+              <CardContent className="space-y-10 p-8">
+                <div className="space-y-5">
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 text-red-500" />
+                    Structural Gaps
+                  </h3>
+                  <div className="grid gap-4">
                     {MOCK_DATA.gaps.structural.map((gap, i) => (
-                      <div key={i} className="p-4 rounded-xl bg-red-50 border border-red-100">
-                        <div className="flex items-center gap-2 mb-1"><Badge variant="destructive" className="text-[10px] uppercase">{gap.type}</Badge></div>
+                      <div key={i} className="p-5 rounded-xl bg-red-50 border border-red-100">
+                        <Badge variant="destructive" className="text-[10px] uppercase mb-2 bg-red-500">{gap.type}</Badge>
                         <p className="text-sm text-red-700 font-medium">{gap.message}</p>
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="space-y-6">
-                  <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 flex items-center gap-2"><Target className="w-4 h-4 text-primary" />Tactical Improvements & Strengthening Templates</h3>
-                  <div className="space-y-6">
+                <div className="space-y-8">
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 flex items-center gap-2">
+                    <Target className="w-4 h-4 text-[#3E8E41]" />
+                    Tactical Improvements
+                  </h3>
+                  <div className="space-y-8">
                     {MOCK_DATA.gaps.tactical.map((item, i) => (
-                      <div key={i} className="space-y-4 p-5 rounded-2xl bg-slate-50 border border-slate-100">
-                        <div className="space-y-2"><span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Original Bullet</span><p className="text-sm text-slate-600 italic">"{item.original}"</p></div>
-                        <div className="grid md:grid-cols-2 gap-4">
-                          <div className="space-y-2"><span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Diagnostic Analysis</span><p className="text-xs text-slate-700 leading-relaxed">{item.explanation}</p></div>
-                          <div className="space-y-2"><span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">JD Alignment Goal</span><p className="text-xs text-slate-700 leading-relaxed">{item.requirement}</p></div>
+                      <div key={i} className="space-y-5 p-6 rounded-xl border border-gray-100 bg-gray-50/30">
+                        <div className="space-y-2">
+                          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Original Bullet</span>
+                          <p className="text-sm text-gray-500 italic">"{item.original}"</p>
                         </div>
-                        <div className="pt-4 border-t border-slate-200">
-                          <div className="flex items-center justify-between mb-2"><span className="text-[10px] font-black text-primary uppercase tracking-widest">Improvement Template</span><Badge variant="outline" className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Honest Guidance Mode</Badge></div>
-                          <div className="p-3 bg-white border border-primary/20 rounded-lg"><code className="text-[11px] text-primary font-bold block mb-1">{item.template}</code><p className="text-xs text-slate-500 font-medium italic">{item.placeholder}</p></div>
-                          <p className="mt-2 text-[10px] text-slate-400 italic">* Do not invent metrics or tools. Only include details that reflect your actual experience.</p>
+                        <div className="grid md:grid-cols-2 gap-6">
+                          <div className="space-y-2">
+                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Diagnostic Analysis</span>
+                            <p className="text-xs text-gray-700 leading-relaxed">{item.explanation}</p>
+                          </div>
+                          <div className="space-y-2">
+                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">JD Alignment Goal</span>
+                            <p className="text-xs text-gray-700 leading-relaxed">{item.requirement}</p>
+                          </div>
+                        </div>
+                        <div className="pt-6 border-t border-gray-100">
+                          <span className="text-[10px] font-bold text-[#3E8E41] uppercase tracking-widest block mb-3">Strengthening Template</span>
+                          <div className="p-4 bg-white border border-gray-100 rounded-lg shadow-sm">
+                            <code className="text-[11px] text-[#3E8E41] font-bold block mb-2">{item.template}</code>
+                            <p className="text-xs text-gray-500 font-medium italic">{item.placeholder}</p>
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -330,18 +379,60 @@ export default function Results() {
               </CardContent>
             </Card>
 
-            <Card className="border-none shadow-xl shadow-orange-200/20 bg-white">
-              <CardHeader className="pb-2"><CardTitle className="text-xl font-bold flex items-center gap-2 text-primary"><Target className="w-5 h-5" />JD-Centric Scoring Logic</CardTitle><CardDescription className="text-slate-500">Pure JD-to-Resume alignment (Domain Agnostic)</CardDescription></CardHeader>
-              <CardContent className="grid md:grid-cols-2 gap-x-12 gap-y-6 py-6">
-                <div className="space-y-5">
-                  <div className="space-y-2"><div className="flex justify-between text-sm font-bold text-slate-700"><span>Required Skill Match (30%)</span><span className={MOCK_DATA.breakdown.requiredSkillMatch < 70 ? "text-destructive" : ""}>{MOCK_DATA.breakdown.requiredSkillMatch}%</span></div><Progress value={MOCK_DATA.breakdown.requiredSkillMatch} className="h-2 bg-slate-100" /></div>
-                  <div className="space-y-2"><div className="flex justify-between text-sm font-bold text-slate-700"><span>Responsibility Alignment (20%)</span><span>{MOCK_DATA.breakdown.responsibilityAlignment}%</span></div><Progress value={MOCK_DATA.breakdown.responsibilityAlignment} className="h-2 bg-slate-100" /></div>
-                  <div className="space-y-2"><div className="flex justify-between text-sm font-bold text-slate-700"><span>Experience Alignment (20%)</span><span>{MOCK_DATA.breakdown.experienceAlignment}%</span></div><Progress value={MOCK_DATA.breakdown.experienceAlignment} className="h-2 bg-slate-100" /></div>
+            <Card className="bg-white border border-gray-100 rounded-2xl shadow-sm p-8">
+              <CardHeader className="px-0 pt-0 pb-6 border-b border-gray-50 mb-6">
+                <CardTitle className="text-xl font-bold flex items-center gap-2 text-gray-900">
+                  <Target className="w-5 h-5 text-[#3E8E41]" />
+                  Scoring Logic
+                </CardTitle>
+                <CardDescription className="text-gray-500">Pure JD-to-Resume alignment</CardDescription>
+              </CardHeader>
+              <CardContent className="px-0 grid md:grid-cols-2 gap-x-16 gap-y-8">
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm font-bold text-gray-700">
+                      <span>Required Skill Match (30%)</span>
+                      <span className={MOCK_DATA.breakdown.requiredSkillMatch < 70 ? "text-red-500" : "text-[#3E8E41]"}>{MOCK_DATA.breakdown.requiredSkillMatch}%</span>
+                    </div>
+                    <Progress value={MOCK_DATA.breakdown.requiredSkillMatch} className="h-1.5 bg-gray-100" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm font-bold text-gray-700">
+                      <span>Responsibility Alignment (20%)</span>
+                      <span>{MOCK_DATA.breakdown.responsibilityAlignment}%</span>
+                    </div>
+                    <Progress value={MOCK_DATA.breakdown.responsibilityAlignment} className="h-1.5 bg-gray-100" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm font-bold text-gray-700">
+                      <span>Experience Alignment (20%)</span>
+                      <span>{MOCK_DATA.breakdown.experienceAlignment}%</span>
+                    </div>
+                    <Progress value={MOCK_DATA.breakdown.experienceAlignment} className="h-1.5 bg-gray-100" />
+                  </div>
                 </div>
-                <div className="space-y-5">
-                  <div className="space-y-2"><div className="flex justify-between text-sm font-bold text-slate-700"><span>Keyword Coverage (15%)</span><span>{MOCK_DATA.breakdown.keywordCoverage}%</span></div><Progress value={MOCK_DATA.breakdown.keywordCoverage} className="h-2 bg-slate-100" /></div>
-                  <div className="space-y-2"><div className="flex justify-between text-sm font-bold text-slate-700"><span>Quantified Impact (10%)</span><span className="text-amber-500">{MOCK_DATA.breakdown.quantifiedImpact}%</span></div><Progress value={MOCK_DATA.breakdown.quantifiedImpact} className="h-2 bg-slate-100" /></div>
-                  <div className="space-y-2"><div className="flex justify-between text-sm font-bold text-slate-700"><span>Structure Quality (5%)</span><span>{MOCK_DATA.breakdown.structureQuality}%</span></div><Progress value={MOCK_DATA.breakdown.structureQuality} className="h-2 bg-slate-100" /></div>
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm font-bold text-gray-700">
+                      <span>Keyword Coverage (15%)</span>
+                      <span>{MOCK_DATA.breakdown.keywordCoverage}%</span>
+                    </div>
+                    <Progress value={MOCK_DATA.breakdown.keywordCoverage} className="h-1.5 bg-gray-100" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm font-bold text-gray-700">
+                      <span>Quantified Impact (10%)</span>
+                      <span className="text-amber-500">{MOCK_DATA.breakdown.quantifiedImpact}%</span>
+                    </div>
+                    <Progress value={MOCK_DATA.breakdown.quantifiedImpact} className="h-1.5 bg-gray-100" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm font-bold text-gray-700">
+                      <span>Structure Quality (5%)</span>
+                      <span>{MOCK_DATA.breakdown.structureQuality}%</span>
+                    </div>
+                    <Progress value={MOCK_DATA.breakdown.structureQuality} className="h-1.5 bg-gray-100" />
+                  </div>
                 </div>
               </CardContent>
             </Card>

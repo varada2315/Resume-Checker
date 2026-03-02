@@ -1,0 +1,121 @@
+Refine the visual design of Optosaur without changing the existing logo.
+
+GOAL:
+- Keep the same dinosaur logo.
+- Fix improper fitting (no square inside circle look).
+- Remove forced circular background container.
+- Improve overall visual consistency and premium SaaS feel.
+- Keep green branding but make it more refined and professional.
+
+----------------------------------------
+STEP 1: LOGO FIX (DO NOT REDESIGN LOGO)
+----------------------------------------
+
+1. Remove any circular or rounded background container behind the logo.
+2. Use the logo image directly (prefer SVG if available).
+3. Ensure the logo is tightly cropped with no extra padding inside the image file.
+4. Set logo height to 36px–40px.
+5. Use:
+
+   class="h-10 w-auto object-contain"
+
+6. Align logo and text properly using flex:
+
+   class="flex items-center gap-3"
+
+7. Ensure the logo baseline aligns visually with the wordmark.
+
+----------------------------------------
+STEP 2: NAVBAR REFINEMENT
+----------------------------------------
+
+1. Use white navbar background.
+2. Add subtle bottom border:
+
+   class="bg-white border-b border-gray-100"
+
+3. Remove beige tint.
+4. Keep layout minimal and balanced.
+
+----------------------------------------
+STEP 3: COLOR SYSTEM UPGRADE
+----------------------------------------
+
+Define a consistent premium color system:
+
+Primary Green: #3E8E41  
+Hover Green: #347A39  
+Main Text: #111827  
+Secondary Text: #6B7280  
+Background: #F9FAFB  
+Card Background: #FFFFFF  
+
+Use green ONLY for:
+- Buttons
+- Icons
+- Score highlights
+- Small accents
+
+Do NOT use green for large headings.
+
+----------------------------------------
+STEP 4: HERO SECTION CLEANUP
+----------------------------------------
+
+1. Make main heading dark (not green):
+
+   class="text-5xl font-bold text-gray-900"
+
+2. Subtitle:
+
+   class="text-xl text-gray-600"
+
+3. Tagline:
+   - Remove quotation marks
+   - Remove italics
+   - Use subtle gray:
+
+   class="text-gray-500"
+
+4. Increase vertical spacing:
+
+   class="py-24"
+
+----------------------------------------
+STEP 5: CARD DESIGN CLEANUP
+----------------------------------------
+
+1. Remove gradient borders.
+2. Use clean modern card style:
+
+   class="bg-white border border-gray-100 rounded-2xl shadow-sm p-8"
+
+3. Add more whitespace between sections.
+
+----------------------------------------
+STEP 6: BUTTON DESIGN
+----------------------------------------
+
+Primary button:
+
+   class="bg-[#3E8E41] hover:bg-[#347A39] text-white px-6 py-3 rounded-xl shadow-md"
+
+----------------------------------------
+DESIGN OBJECTIVE
+----------------------------------------
+
+Make Optosaur feel:
+- Modern SaaS
+- Minimal
+- Intelligent
+- Clean
+- Not playful or cartoonish
+- Not template-like
+
+Keep the dinosaur logo exactly the same.
+Only improve layout, spacing, fitting, and color harmony.
+
+Ensure final UI feels similar in quality to:
+Linear / Notion / Vercel / Stripe.
+
+Return updated HTML + Tailwind classes.
