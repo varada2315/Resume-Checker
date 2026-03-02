@@ -1,0 +1,119 @@
+Upgrade the SmartATS Resume Optimizer to produce highly reliable and legitimate evaluation results.
+
+The system must NOT rely purely on OpenAI subjective analysis.
+It must use deterministic scoring + structured comparison before generating suggestions.
+
+-----------------------------------
+CORE ARCHITECTURE REQUIREMENTS
+-----------------------------------
+
+1) TEXT CLEANING LAYER
+- Normalize whitespace
+- Preserve bullet points
+- Convert to lowercase
+- Remove special characters except bullet markers
+- Ensure sections (experience, skills, education) are detectable
+
+2) JD ANALYSIS ENGINE
+Extract structured data:
+- Required hard skills
+- Tools & technologies
+- Soft skills
+- Years of experience required
+- Role title
+- Seniority level
+- Industry keywords
+
+Store this as structured JSON.
+
+3) RESUME ANALYSIS ENGINE
+Extract:
+- Skills list
+- Tools mentioned
+- Years of experience (calculate from dates if possible)
+- Number of quantified bullet points (detect % or numbers)
+- Section presence (experience, education, skills)
+- Total word count
+
+Return structured JSON.
+
+4) MATCHING ENGINE (DETERMINISTIC LOGIC)
+
+A) Exact keyword match percentage
+B) Partial match detection (avoid matching "java" inside "javascript")
+C) Cosine similarity using TF-IDF
+D) Skill gap detection
+E) Experience gap detection
+
+Calculate weighted score:
+
+- Skill match (30%)
+- Experience alignment (20%)
+- Keyword density (15%)
+- Quantified impact presence (15%)
+- ATS structure compliance (10%)
+- Semantic similarity (10%)
+
+Return final score out of 100.
+
+5) RULE-BASED VALIDATION
+
+If:
+- Experience required > experience in resume → deduct points
+- Less than 2 quantified bullets → deduct points
+- Missing required hard skills → major deduction
+
+6) AI SUGGESTION LAYER
+
+Only after structured scoring is complete:
+Send structured JSON comparison + resume text to OpenAI.
+
+Prompt OpenAI:
+"Based ONLY on the structured evaluation provided, generate improvement suggestions. Do not invent missing skills unless listed in 'missing_skills'."
+
+AI must:
+- Rewrite weak bullets
+- Suggest adding quantified metrics
+- Improve skill positioning
+- Not hallucinate experience
+
+7) RESPONSE VALIDATION
+
+Before showing results:
+- Ensure missing skills listed by AI match actual missing skills JSON.
+- Ensure verdict matches numeric score:
+   >80 = Highly Likely
+   60–80 = Borderline
+   <60 = Low Match
+
+-----------------------------------
+UI REQUIREMENTS
+-----------------------------------
+
+On results page show:
+
+- Final ATS Score
+- Skill Match %
+- Experience Match %
+- Missing Hard Skills
+- Quantified Bullet Count
+- Structured recruiter verdict
+- AI Suggestions
+
+Display structured breakdown clearly so user trusts score.
+
+-----------------------------------
+IMPORTANT RULES
+-----------------------------------
+
+- No random scoring.
+- No purely subjective AI judgment.
+- All verdicts must align with numeric score.
+- Make scoring logic transparent in code.
+- Modularize into:
+    analyzer.py
+    scorer.py
+    validator.py
+    ai_layer.py
+
+Generate full working backend code implementing this logic.
